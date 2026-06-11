@@ -112,17 +112,6 @@ export function processTasks(clickUpTasks: ClickUpTask[]): ProcessedTask[] {
       if (now - closedDate > THIRTY_DAYS_MS) {
         return false;
       }
-    } else {
-      // 2. Tareas abiertas: descartar si no se han actualizado en 45 días Y (no tienen due_date o su due_date pasó hace más de 30 días)
-      const updatedDate = parseInt(t.date_updated);
-      const dueDate = t.due_date ? parseInt(t.due_date) : 0;
-      
-      const hasRecentUpdate = (now - updatedDate) < (45 * 24 * 60 * 60 * 1000);
-      const hasFutureOrRecentDueDate = dueDate > (now - THIRTY_DAYS_MS);
-      
-      if (!hasRecentUpdate && !hasFutureOrRecentDueDate) {
-        return false;
-      }
     }
     
     return true;
