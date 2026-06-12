@@ -65,10 +65,34 @@ export default function TaskBoard({ departmentTitle, departmentKey }: { departme
   }
 
   if (error) {
+    const isNoToken = error?.message?.includes('token') || error?.message?.includes('401') || String(error).includes('401');
     return (
-      <div className="p-6 bg-error-container text-on-error-container rounded-xl font-body-md border border-error">
-        <div className="flex items-center gap-2 mb-2"><span className="material-symbols-outlined">error</span> Error</div>
-        <p>{error}</p>
+      <div className="flex flex-col items-center justify-center min-h-[400px] w-full gap-lg p-xl">
+        <div className="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-center">
+          <span className="material-symbols-outlined text-primary text-[36px]">{isNoToken ? 'key' : 'error'}</span>
+        </div>
+        <div className="text-center">
+          <h3 className="font-headline-md text-on-surface mb-sm">
+            {isNoToken ? 'Conecta tu ClickUp' : 'Error al cargar tareas'}
+          </h3>
+          <p className="font-body-md text-on-surface-variant max-w-sm">
+            {isNoToken
+              ? 'Para ver las tareas de tu agencia, necesitas conectar tu cuenta de ClickUp.'
+              : String(error?.message || error)}
+          </p>
+        </div>
+        {isNoToken && (
+          <button
+            onClick={() => {
+              // Dispatch a custom event so the Sidebar can open the settings modal
+              window.dispatchEvent(new CustomEvent('open-settings'));
+            }}
+            className="flex items-center gap-sm px-lg py-md rounded-xl bg-primary text-on-primary font-label-lg hover:bg-primary/90 transition-all shadow-lg"
+          >
+            <span className="material-symbols-outlined">settings</span>
+            Configurar API Token
+          </button>
+        )}
       </div>
     );
   }

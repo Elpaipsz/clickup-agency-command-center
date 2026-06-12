@@ -12,7 +12,6 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [showToken, setShowToken] = useState(false);
   const [currentTokenMasked, setCurrentTokenMasked] = useState('');
   const [hasToken, setHasToken] = useState(false);
-  const [isVercel, setIsVercel] = useState(false);
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -20,60 +19,57 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
     if (isOpen) {
       setStatus('idle');
       setToken('');
-      fetchCurrentSettings();
+      loadCurrentToken();
     }
   }, [isOpen]);
 
-  const fetchCurrentSettings = async () => {
-    try {
-      const res = await fetch('/api/settings');
-      if (res.ok) {
-        const data = await res.json();
-        setHasToken(data.hasToken);
-        setIsVercel(data.isVercel || false);
-        setCurrentTokenMasked(data.tokenMasked || '');
-      }
-    } catch {}
-  };
-
-  const handleSave = async () => {
-    if (!token.trim()) return;
-    setStatus('saving');
-    setErrorMsg('');
-
-    try {
-      const res = await fetch('/api/settings', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ clickup_token: token.trim() }),
-      });
-
-      if (res.ok) {
-        setStatus('saved');
-        setHasToken(true);
-        setCurrentTokenMasked(`${token.slice(0, 6)}${'•'.repeat(20)}${token.slice(-4)}`);
-        setToken('');
-        // Reload after a short delay to apply the new token globally
-        setTimeout(() => window.location.reload(), 1200);
-      } else {
-        const data = await res.json();
-        setStatus('error');
-        setErrorMsg(data.error || 'Error al guardar el token.');
-      }
-    } catch (err: any) {
-      setStatus('error');
-      setErrorMsg(err.message);
+  const loadCurrentToken = () => {
+    // Always check localStorage first (works everywhere: local + Vercel)
+    const stored = localStorage.getItem('CLICKUP_TOKEN');
+    if (stored) {
+      setHasToken(true);
+      setCurrentTokenMasked(`${stored.slice(0, 6)}${'•'.repeat(20)}${stored.slice(-4)}`);
+    } else {
+      setHasToken(false);
+      setCurrentTokenMasked('');
     }
   };
 
-  const handleRemove = async () => {
+  const handleSave = async () => {
+    const trimmed = token.trim();
+    if (!trimmed) return;
+    setStatus('saving');
+    setErrorMsg('');
+
+    // 1. Always save to localStorage (persistent, works on Vercel)
+    localStorage.setItem('CLICKUP_TOKEN', trimmed);
+
+    // 2. Also try to save to server file (works locally, silently fails on Vercel)
     try {
-      await fetch('/api/settings', { method: 'DELETE' });
-      setHasToken(false);
-      setCurrentTokenMasked('');
-      setToken('');
-      setStatus('idle');
-    } catch {}
+      await fetch('/api/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ clickup_token: trimmed }),
+      });
+    } catch {
+      // Silently ignore if server can't save (Vercel) — localStorage is enough
+    }
+
+    setStatus('saved');
+    setHasToken(true);
+    setCurrentTokenMasked(`${trimmed.slice(0, 6)}${'•'.repeat(20)}${trimmed.slice(-4)}`);
+    setToken('');
+    setTimeout(() => window.location.reload(), 1200);
+  };
+
+  const handleRemove = () => {
+    localStorage.removeItem('CLICKUP_TOKEN');
+    // Also try server
+    fetch('/api/settings', { method: 'DELETE' }).catch(() => {});
+    setHasToken(false);
+    setCurrentTokenMasked('');
+    setToken('');
+    setStatus('idle');
   };
 
   if (!isOpen) return null;
@@ -81,7 +77,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   return (
     <div className="fixed inset-0 z-[200] flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
       <div className="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden flex flex-col bg-[#0A0118] border border-white/10 animate-in fade-in zoom-in-95 duration-200">
-        
+
         {/* Header */}
         <div className="p-lg border-b border-white/[0.08] flex justify-between items-start bg-white/[0.02]">
           <div>
@@ -95,7 +91,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             <span className="material-symbols-outlined">close</span>
           </button>
         </div>
-        
+
         {/* Body */}
         <div className="p-lg flex flex-col gap-lg">
 
@@ -108,7 +104,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             </div>
             <div className="flex-1 min-w-0">
               <p className={`font-label-md font-bold ${hasToken ? 'text-green-300' : 'text-white/50'}`}>
-                {hasToken ? 'Token guardado en el servidor' : 'Sin token configurado'}
+                {hasToken ? '✅ ClickUp conectado' : 'Sin token configurado'}
               </p>
               {hasToken && currentTokenMasked && (
                 <p className="font-mono-data text-[11px] text-white/40 mt-0.5 truncate">{currentTokenMasked}</p>
@@ -125,29 +121,11 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             )}
           </div>
 
-          {/* Token Input — or Vercel instructions */}
-          {isVercel ? (
-            <div className="flex flex-col gap-sm p-md rounded-xl bg-[#1a1200] border border-yellow-500/30">
-              <div className="flex items-center gap-sm">
-                <span className="material-symbols-outlined text-yellow-400 text-[20px]">info</span>
-                <p className="font-label-md font-bold text-yellow-300">Corriendo en Vercel</p>
-              </div>
-              <p className="text-[12px] text-white/60 leading-relaxed">
-                En Vercel no se puede guardar archivos locales. Para conectar tu ClickUp:
-              </p>
-              <ol className="text-[12px] text-white/70 leading-loose list-decimal list-inside space-y-1">
-                <li>Ve a tu proyecto en <strong className="text-white">vercel.com</strong></li>
-                <li>Entra a <strong className="text-white">Settings → Environment Variables</strong></li>
-                <li>Agrega la variable: <code className="bg-white/10 px-1 rounded text-yellow-300">CLICKUP_API_TOKEN</code></li>
-                <li>Pega tu token y guarda</li>
-                <li>Haz <strong className="text-white">Redeploy</strong> del proyecto</li>
-              </ol>
-            </div>
-          ) : (
-            <div className="flex flex-col gap-sm">
-              <label className="font-label-md text-white/70 text-sm">
-                {hasToken ? 'Actualizar API Token' : 'Ingresar API Token'}
-              </label>
+          {/* Token Input */}
+          <div className="flex flex-col gap-sm">
+            <label className="font-label-md text-white/70 text-sm">
+              {hasToken ? 'Actualizar API Token' : 'Ingresar API Token'}
+            </label>
             <div className="relative">
               <input
                 type={showToken ? 'text' : 'password'}
@@ -155,7 +133,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
                 value={token}
                 onChange={(e) => setToken(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSave()}
-                placeholder="pk_89241101_..."
+                placeholder="pk_..."
                 className="w-full bg-[#1f162d] border border-white/10 focus:border-primary focus:ring-1 focus:ring-primary rounded-xl px-md py-md pr-12 text-white font-mono-data text-sm outline-none transition-all placeholder:text-white/20"
               />
               <button
@@ -169,18 +147,16 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               </button>
             </div>
             <p className="text-[11px] text-white/40 leading-tight">
-              Puedes obtenerlo en ClickUp → Settings → Apps → API Token.
-              <br />
-              ✅ El token se guarda <strong className="text-white/60">en el servidor</strong>, no en el navegador. Persistirá aunque cierres el browser.
+              Obtén tu token en ClickUp → Settings → Apps → API Token.<br />
+              El token se guarda en este navegador y no necesitas volver a ingresarlo.
             </p>
           </div>
-          )}
 
           {/* Status feedback */}
           {status === 'saved' && (
             <div className="flex items-center gap-sm p-sm rounded-lg bg-green-500/10 border border-green-500/30 text-green-300 font-label-md">
               <span className="material-symbols-outlined text-[18px]">check_circle</span>
-              Token guardado correctamente. Recargando...
+              ¡Token guardado! Recargando el dashboard...
             </div>
           )}
           {status === 'error' && (
@@ -197,27 +173,25 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             onClick={onClose}
             className="px-md py-sm rounded-lg font-label-md text-white/60 hover:text-white hover:bg-white/10 transition-colors"
           >
-            Cerrar
+            Cancelar
           </button>
-          {!isVercel && (
-            <button
-              onClick={handleSave}
-              disabled={!token.trim() || status === 'saving'}
-              className="px-md py-sm rounded-lg font-label-md bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-xs"
-            >
-              {status === 'saving' ? (
-                <>
-                  <span className="material-symbols-outlined animate-spin text-[16px]">progress_activity</span>
-                  Guardando...
-                </>
-              ) : (
-                <>
-                  <span className="material-symbols-outlined text-[16px]">save</span>
-                  Guardar en servidor
-                </>
-              )}
-            </button>
-          )}
+          <button
+            onClick={handleSave}
+            disabled={!token.trim() || status === 'saving'}
+            className="px-md py-sm rounded-lg font-label-md bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-xs"
+          >
+            {status === 'saving' ? (
+              <>
+                <span className="material-symbols-outlined animate-spin text-[16px]">progress_activity</span>
+                Guardando...
+              </>
+            ) : (
+              <>
+                <span className="material-symbols-outlined text-[16px]">save</span>
+                Guardar
+              </>
+            )}
+          </button>
         </div>
       </div>
     </div>

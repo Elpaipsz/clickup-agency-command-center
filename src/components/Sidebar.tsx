@@ -2,12 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SettingsModal from './SettingsModal';
 
 export default function Sidebar() {
   const pathname = usePathname();
   const [showSettings, setShowSettings] = useState(false);
+
+  // Allow any component to open the settings modal via a custom event
+  useEffect(() => {
+    const handler = () => setShowSettings(true);
+    window.addEventListener('open-settings', handler);
+    return () => window.removeEventListener('open-settings', handler);
+  }, []);
 
   const links = [
     { href: '/', icon: 'dashboard', label: 'Dashboard' },
