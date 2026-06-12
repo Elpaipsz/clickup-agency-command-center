@@ -93,55 +93,64 @@ export default function AgencyDashboard() {
   return (
     <div className="bento-grid">
       {/* KPI Cards Row */}
-      <div className="col-span-12 md:col-span-3 glass-card rounded-xl p-lg flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary/50 to-transparent"></div>
         <div className="flex justify-between items-start mb-md">
-          <h3 className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Total Activas</h3>
-          <span className="material-symbols-outlined text-secondary">cases</span>
+          <h3 className="font-label-md text-label-md text-on-surface-variant/70 uppercase tracking-[0.12em]">Total Activas</h3>
+          <span className="material-symbols-outlined text-primary text-[20px]">cases</span>
         </div>
         <div>
-          <div className="font-display-lg text-display-lg text-on-surface">{summary.totalTasks}</div>
-          <div className="font-body-sm text-body-sm text-surface-tint mt-xs flex items-center gap-xs">
-            Este mes
+          <div className="font-display-lg text-display-lg text-on-surface font-black tracking-tight">{summary.totalTasks}</div>
+          <div className="font-body-sm text-body-sm text-on-surface-variant/50 mt-xs flex items-center gap-xs">
+            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+            ClickUp Sync
           </div>
         </div>
       </div>
       
-      <div className="col-span-12 md:col-span-3 glass-card rounded-xl p-lg flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_0_20px_rgba(248,81,73,0.02)]">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-error/50 to-transparent"></div>
         <div className="flex justify-between items-start mb-md">
-          <h3 className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Tareas Críticas</h3>
-          <span className="material-symbols-outlined text-error">warning</span>
+          <h3 className="font-label-md text-label-md text-on-surface-variant/70 uppercase tracking-[0.12em]">Tareas Críticas</h3>
+          <span className="material-symbols-outlined text-error text-[20px] animate-pulse">warning</span>
         </div>
         <div>
-          <div className="font-display-lg text-display-lg text-error">{summary.criticalTasks}</div>
-          <div className="font-body-sm text-body-sm text-error mt-xs flex items-center gap-xs">
-            <span className="material-symbols-outlined text-[16px]">priority_high</span>
-            Requieren atención
+          <div className="flex items-baseline gap-sm">
+            <div className="font-display-lg text-display-lg text-error font-black tracking-tight">{summary.criticalTasks}</div>
+            {summary.criticalTasks > 0 && (
+              <span className="pulse-indicator red"></span>
+            )}
+          </div>
+          <div className="font-body-sm text-body-sm text-error/80 mt-xs flex items-center gap-xs">
+            Requieren atención inmediata
           </div>
         </div>
       </div>
       
-      <div className="col-span-12 md:col-span-3 glass-card rounded-xl p-lg flex flex-col justify-between hover:shadow-md transition-shadow">
+      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF9800]/50 to-transparent"></div>
         <div className="flex justify-between items-start mb-md">
-          <h3 className="font-label-md text-label-md text-on-surface-variant uppercase tracking-wider">Vencidas</h3>
-          <span className="material-symbols-outlined text-on-surface-variant">timer_off</span>
+          <h3 className="font-label-md text-label-md text-on-surface-variant/70 uppercase tracking-[0.12em]">Vencidas</h3>
+          <span className="material-symbols-outlined text-[#FF9800] text-[20px]">timer_off</span>
         </div>
         <div>
-          <div className="font-display-lg text-display-lg text-on-surface">{summary.expiredTasks}</div>
-          <div className="font-body-sm text-body-sm text-surface-tint mt-xs flex items-center gap-xs">
-            Pasadas de la fecha
+          <div className="font-display-lg text-display-lg text-on-surface font-black tracking-tight">{summary.expiredTasks}</div>
+          <div className="font-body-sm text-body-sm text-on-surface-variant/50 mt-xs flex items-center gap-xs">
+            Pasadas de fecha límite
           </div>
         </div>
       </div>
       
-      <div className="col-span-12 md:col-span-3 glass-card rounded-xl p-lg flex flex-col justify-between hover:shadow-md transition-shadow bg-secondary-container text-on-secondary-container border-none">
+      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_0_20px_rgba(63,185,80,0.02)]">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#3FB950]/50 to-transparent"></div>
         <div className="flex justify-between items-start mb-md">
-          <h3 className="font-label-md text-label-md text-secondary-fixed-dim uppercase tracking-wider">Completadas</h3>
-          <span className="material-symbols-outlined text-on-secondary-container">task_alt</span>
+          <h3 className="font-label-md text-label-md text-on-surface-variant/70 uppercase tracking-[0.12em]">Completadas</h3>
+          <span className="material-symbols-outlined text-[#3FB950] text-[20px]">task_alt</span>
         </div>
         <div>
-          <div className="font-display-lg text-display-lg">{summary.completedTasks}</div>
-          <div className="font-body-sm text-body-sm text-secondary-fixed-dim mt-xs flex items-center gap-xs">
-            Logradas recientemente
+          <div className="font-display-lg text-display-lg text-[#3FB950] font-black tracking-tight">{summary.completedTasks}</div>
+          <div className="font-body-sm text-body-sm text-[#3FB950]/80 mt-xs flex items-center gap-xs">
+            Logradas (Últimos 30 días)
           </div>
         </div>
       </div>

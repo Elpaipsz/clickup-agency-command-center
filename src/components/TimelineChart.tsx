@@ -12,7 +12,7 @@ export default function TimelineChart({ tasks }: Props) {
     .slice(0, 10); // Show next 10 tasks
 
   if (sortedTasks.length === 0) {
-    return <div className="text-sm text-slate-400 p-4">No hay tareas con fecha límite próxima.</div>;
+    return <div className="text-sm text-on-surface-variant p-4">No hay tareas con fecha límite próxima.</div>;
   }
 
   return (
@@ -23,19 +23,19 @@ export default function TimelineChart({ tasks }: Props) {
         
         return (
           <div key={task.id} className="flex items-center gap-4">
-            <div className={`w-24 text-right text-xs font-semibold ${isExpired ? 'text-red-400' : 'text-slate-300'}`}>
+            <div className={`w-24 text-right text-xs font-semibold ${isExpired ? 'text-error' : 'text-on-surface-variant'}`}>
               {dueDate.toLocaleDateString(undefined, { day: '2-digit', month: 'short' })}
             </div>
             
             {/* Timeline line */}
             <div className="relative flex flex-col items-center">
-              <div className={`w-3 h-3 rounded-full ${isExpired ? 'bg-red-500' : 'bg-purple-500'} shadow-[0_0_8px_rgba(180,124,253,0.4)] z-10`} />
-              <div className="absolute top-3 bottom-[-16px] w-0.5 bg-purple-500/20" />
+              <div className={`w-3 h-3 rounded-full ${isExpired ? 'bg-error' : 'bg-primary'} shadow-[0_0_8px_rgba(180,124,253,0.4)] z-10`} />
+              <div className="absolute top-3 bottom-[-16px] w-0.5 bg-primary/20" />
             </div>
 
-            <div className="flex-1 glass-panel p-2.5 hover:bg-slate-800 transition-colors">
+            <div className="flex-1 glass-card p-2.5 hover:bg-surface-container-high transition-colors">
               <div className="flex justify-between items-center mb-1">
-                <span className={`text-sm font-semibold truncate ${isExpired ? 'text-red-400' : 'text-slate-200'}`}>
+                <span className={`text-sm font-semibold truncate ${isExpired ? 'text-error' : 'text-on-surface'}`}>
                   {task.name}
                 </span>
                 <span 
@@ -45,7 +45,7 @@ export default function TimelineChart({ tasks }: Props) {
                   {task.status.name}
                 </span>
               </div>
-              <div className="text-xs text-slate-400 truncate">
+              <div className="text-xs text-on-surface-variant truncate">
                 {task.client} • {task.assignees.map(a => a.name).join(', ') || 'Sin Asignar'}
               </div>
             </div>
