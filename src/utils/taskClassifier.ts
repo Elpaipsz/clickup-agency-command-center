@@ -19,19 +19,35 @@ export function extractClient(task: any, parentName?: string | null): string {
 /**
  * Clasifica una tarea en una de las 4 áreas principales: Web, Pauta Publicitaria, Diseño y contenido, o Núcleo.
  */
-export function classifyArea(task: ClickUpTask, parentName?: string | null): TaskArea {
+export function classifyArea(task: any, parentName?: string | null): TaskArea {
   const name = task.name.toLowerCase();
   const desc = (task.description || '').toLowerCase();
   const parent = (parentName || '').toLowerCase();
   
-  // Obtener valor del custom field "Tipo"
+  // --- SEÑAL PRIMARIA: nombre exacto de la lista de ClickUp ---
+  // Esto es la forma más confiable cuando los espacios tienen listas como "Web", "Pauta Publicitaria", etc.
+  const listName = (task.list?.name || '').toLowerCase();
+  const folderName = (task.folder?.name || '').toLowerCase();
+  
+  const isListWeb = listName === 'web' || listName.includes('proyectos web') || listName.includes('web dev');
+  const isListPauta = listName === 'pauta publicitaria' || listName === 'pauta' || listName.includes('pauta') || listName.includes('ads');
+  const isListDiseno = listName === 'diseño & contenido' || listName === 'diseño y contenido' || listName === 'diseño' || listName.includes('diseno') || listName.includes('diseño') || listName.includes('contenido');
+  
+  const isFolderWeb = folderName !== 'hidden' && (folderName.includes('web') || folderName.includes('desarrollo'));
+  const isFolderPauta = folderName !== 'hidden' && (folderName.includes('pauta') || folderName.includes('ads'));
+  const isFolderDiseno = folderName !== 'hidden' && (folderName.includes('diseño') || folderName.includes('diseno') || folderName.includes('contenido'));
+
+  if (isListWeb || isFolderWeb) return 'Web';
+  if (isListPauta || isFolderPauta) return 'Pauta Publicitaria';
+  if (isListDiseno || isFolderDiseno) return 'Diseño y contenido';
+
+  // --- SEÑAL SECUNDARIA: campo personalizado "Tipo" ---
   let customFieldTipo = '';
   if (task.custom_fields) {
-    const cf = task.custom_fields.find(f => f.name.toLowerCase() === 'tipo');
+    const cf = task.custom_fields.find((f: any) => f.name.toLowerCase() === 'tipo');
     if (cf && cf.value !== undefined) {
       if (cf.type === 'drop_down' && cf.type_config?.options) {
-        // En ClickUp, el value puede ser el ID o el índice de la opción
-        const opt = cf.type_config.options.find(o => o.id === cf.value || o.orderindex === cf.value);
+        const opt = cf.type_config.options.find((o: any) => o.id === cf.value || o.orderindex === cf.value);
         if (opt) customFieldTipo = opt.name.toLowerCase();
       } else if (typeof cf.value === 'string') {
         customFieldTipo = cf.value.toLowerCase();
@@ -39,59 +55,38 @@ export function classifyArea(task: ClickUpTask, parentName?: string | null): Tas
     }
   }
 
-  // 1. Web
+  // --- SEÑAL TERCIARIA: palabras clave en nombre, descripción y padre ---
+  // Web
   if (
-    name.includes('web') || 
-    name.includes('seo') || 
-    name.includes('blog') || 
-    name.includes('hosting') || 
-    name.includes('desarrollo') ||
-    desc.includes('web') ||
-    parent.includes('web') ||
-    parent.includes('blog')
+    name.includes('web') || name.includes('seo') || name.includes('blog') ||
+    name.includes('hosting') || name.includes('shopify') || name.includes('wordpress') ||
+    desc.includes('web') || parent.includes('web') || parent.includes('blog')
   ) {
     return 'Web';
   }
 
-  // 2. Pauta Publicitaria
+  // Pauta Publicitaria
   if (
-    name.includes('pauta') ||
-    name.includes('campaña') ||
-    name.includes('campana') ||
-    name.includes('ads') ||
-    name.includes('anuncio') ||
-    customFieldTipo.includes('pauta') ||
-    desc.includes('pauta') ||
-    parent.includes('pauta') ||
-    parent.includes('ads')
+    name.includes('pauta') || name.includes('campaña') || name.includes('campana') ||
+    name.includes('ads') || name.includes('anuncio') || name.includes('google') ||
+    name.includes('meta') || name.includes('facebook') || name.includes('instagram ad') ||
+    customFieldTipo.includes('pauta') || desc.includes('pauta') ||
+    parent.includes('pauta') || parent.includes('ads')
   ) {
     return 'Pauta Publicitaria';
   }
 
-  // 3. Diseño y contenido
+  // Diseño y contenido
   if (
-    name.includes('reels') ||
-    name.includes('logotipo') ||
-    name.includes('branding') ||
-    name.includes('copy') ||
-    name.includes('videos') ||
-    name.includes('video') ||
-    name.includes('diseño') ||
-    name.includes('diseno') ||
-    name.includes('boletín') ||
-    name.includes('boletin') ||
-    name.includes('email') ||
-    name.includes('carta') ||
-    name.includes('redactar') ||
-    name.includes('grabar') ||
-    name.includes('editar') ||
-    name.includes('contenido') ||
-    customFieldTipo.includes('contenido') ||
-    customFieldTipo.includes('email') ||
+    name.includes('reels') || name.includes('logotipo') || name.includes('branding') ||
+    name.includes('copy') || name.includes('videos') || name.includes('video') ||
+    name.includes('diseño') || name.includes('diseno') || name.includes('boletín') ||
+    name.includes('boletin') || name.includes('email') || name.includes('carta') ||
+    name.includes('redactar') || name.includes('grabar') || name.includes('editar') ||
+    name.includes('contenido') || name.includes('parrilla') || name.includes('podcast') ||
+    customFieldTipo.includes('contenido') || customFieldTipo.includes('email') ||
     customFieldTipo.includes('comunidad') ||
-    parent.includes('reels') ||
-    parent.includes('contenido') ||
-    parent.includes('boletín')
+    parent.includes('reels') || parent.includes('contenido') || parent.includes('boletín')
   ) {
     return 'Diseño y contenido';
   }
