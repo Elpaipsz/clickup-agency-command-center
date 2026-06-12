@@ -226,10 +226,13 @@ body {
 
 /* Form inputs & styling */
 input, select, textarea {
-  background: rgba(10, 1, 24, 0.7);
+  background: var(--bg-card);
+  backdrop-filter: var(--backdrop-blur);
+  -webkit-backdrop-filter: var(--backdrop-blur);
   border: 1px solid var(--border-glass);
   color: var(--text-primary);
-  border-radius: 8px;
+  border-radius: 20px; /* 20px base radius per TypeUI specs */
+  padding: 10px 12px;
   outline: none;
   transition: var(--transition-smooth);
 }
@@ -238,7 +241,7 @@ input:focus, select:focus, textarea:focus {
   box-shadow: var(--glow-lavender);
 }
 select option {
-  background: var(--bg-surface);
+  background: #241A30; /* Prune brand background for select list options */
   color: var(--text-primary);
 }
 
@@ -391,7 +394,7 @@ select option {
   }
 }
 
-/* Ensure backdrop blur is automatically applied to all surface background classes globally */
+/* Ensure backdrop blur and edge highlights are automatically applied to all surface background classes globally */
 .bg-surface,
 .bg-surface-container,
 .bg-surface-container-low,
@@ -399,7 +402,45 @@ select option {
 .bg-surface-container-high,
 .bg-surface-container-highest,
 .bg-surface-bright {
+  position: relative;
+  overflow: hidden;
   backdrop-filter: var(--backdrop-blur) !important;
   -webkit-backdrop-filter: var(--backdrop-blur) !important;
+}
+
+.bg-surface::before,
+.bg-surface-container::before,
+.bg-surface-container-low::before,
+.bg-surface-container-lowest::before,
+.bg-surface-container-high::before,
+.bg-surface-container-highest::before,
+.bg-surface-bright::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.bg-surface::after,
+.bg-surface-container::after,
+.bg-surface-container-low::after,
+.bg-surface-container-lowest::after,
+.bg-surface-container-high::after,
+.bg-surface-container-highest::after,
+.bg-surface-bright::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  bottom: 0;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.05));
+  pointer-events: none;
+  z-index: 1;
 }
 
