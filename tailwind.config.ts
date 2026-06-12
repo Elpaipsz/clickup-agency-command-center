@@ -16,17 +16,17 @@ const config: Config = {
         "on-secondary": "#FFFFFF", // Full White
         "background": "#0A0118", // Black Russian
         "on-background": "#FFFFFF", // Full White
-        "surface": "#241A30", // Prune
+        "surface": "rgba(36, 26, 48, 0.45)", // Prune Glass
         "on-surface": "#FFFFFF", // Full White
         "on-surface-variant": "#E9E9E9", // White Echo
         "outline": "#B47CFD", // Vivid Lavender
         "outline-variant": "rgba(180, 124, 253, 0.2)", // Subtle Lavender border
-        "surface-container-lowest": "#0A0118", // Black Russian
-        "surface-container-low": "#120A24", // Deep Violet Black
-        "surface-container": "#241A30", // Prune
-        "surface-container-high": "rgba(36, 26, 48, 0.8)", // Semi-transparent Prune
-        "surface-container-highest": "rgba(36, 26, 48, 0.95)",
-        "surface-bright": "#241A30", // Prune
+        "surface-container-lowest": "rgba(10, 1, 24, 0.35)", // Black Russian Glass
+        "surface-container-low": "rgba(18, 10, 36, 0.55)", // Deep Violet Glass
+        "surface-container": "rgba(36, 26, 48, 0.55)", // Prune Glass
+        "surface-container-high": "rgba(36, 26, 48, 0.75)", // Semi-transparent Prune
+        "surface-container-highest": "rgba(36, 26, 48, 0.85)",
+        "surface-bright": "rgba(36, 26, 48, 0.65)", // Prune Glass
         "primary-fixed": "#B47CFD",
         "on-primary-fixed": "#FFFFFF",
         "secondary-fixed": "#B47CFD",
