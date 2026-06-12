@@ -21,6 +21,8 @@
 
 @layer components {
   .glass-card {
+    position: relative;
+    overflow: hidden;
     background: var(--bg-card);
     backdrop-filter: var(--backdrop-blur);
     -webkit-backdrop-filter: var(--backdrop-blur);
@@ -30,9 +32,48 @@
     transition: var(--transition-smooth);
   }
   
+  .glass-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .glass-card::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    bottom: 0;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.05));
+    pointer-events: none;
+    z-index: 1;
+  }
+
   .glass-card:hover {
     border-color: var(--border-glass-active);
     box-shadow: 0 16px 48px 0 rgba(0, 0, 0, 0.6), var(--glow-lavender);
+  }
+
+  /* Glint effect for buttons */
+  .btn-glint {
+    box-shadow: 
+      0 2px 8px rgba(0, 0, 0, 0.08), 
+      inset rgba(255,255,255,0.15) 0 6px 0px -5px, 
+      rgba(180, 124, 253, 0.2) 0 4px 10px -5px;
+    transition: var(--transition-smooth);
+  }
+  .btn-glint:hover {
+    box-shadow: 
+      0 4px 16px rgba(0, 0, 0, 0.12), 
+      inset rgba(255,255,255,0.2) 0 6px 0px -5px, 
+      rgba(180, 124, 253, 0.35) 0 6px 15px -5px;
   }
 
   .bento-grid {

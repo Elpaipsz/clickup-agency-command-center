@@ -228,12 +228,12 @@ export default function TaskModal({
         </div>
 
         <div className="p-lg border-t border-outline-variant/30 bg-surface-container-lowest flex justify-between items-center gap-sm">
-          <button onClick={() => onDelete(task.id)} disabled={isDeleting} className="px-md py-sm rounded-lg font-label-md text-error hover:bg-error/10 transition-colors flex items-center gap-2">
+          <button onClick={() => onDelete(task.id)} disabled={isDeleting} className="px-md py-sm rounded-lg font-label-md text-error hover:bg-error/10 transition-colors flex items-center gap-2 btn-glint">
             <span className="material-symbols-outlined text-[18px]">delete</span>
             {isDeleting ? 'Eliminando...' : 'Eliminar Tarea'}
           </button>
           
-          <a href={task.url} target="_blank" rel="noreferrer" className="px-md py-sm rounded-lg font-label-md text-secondary hover:bg-secondary/10 transition-colors flex items-center gap-2">
+          <a href={task.url} target="_blank" rel="noreferrer" className="px-md py-sm rounded-lg font-label-md text-secondary hover:bg-secondary/10 transition-colors flex items-center gap-2 btn-glint">
             <span className="material-symbols-outlined text-[18px]">open_in_new</span>
             Abrir en ClickUp
           </a>

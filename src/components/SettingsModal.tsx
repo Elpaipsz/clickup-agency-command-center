@@ -79,7 +79,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
           </button>
           <button 
             onClick={handleSave} 
-            className="px-md py-sm rounded-lg font-label-md bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm"
+            className="px-md py-sm rounded-lg font-label-md bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm btn-glint"
           >
             Guardar y Recargar
           </button>
