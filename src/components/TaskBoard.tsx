@@ -4,6 +4,7 @@ import { useState } from 'react';
 import useSWR from 'swr';
 import Image from 'next/image';
 import TaskModal from './TaskModal';
+import Loader from './Loader';
 
 import { ProcessedTask, DashboardData } from '../types';
 
@@ -51,9 +52,8 @@ export default function TaskBoard({ departmentTitle, departmentKey }: { departme
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-64 w-full glass-card rounded-xl">
-        <span className="material-symbols-outlined animate-spin text-[48px] text-secondary">sync</span>
-        <p className="mt-4 font-label-md text-label-md text-on-surface-variant">Sincronizando ClickUp...</p>
+      <div className="flex flex-col items-center justify-center min-h-[300px] w-full glass-panel p-lg rounded-xl">
+        <Loader />
       </div>
     );
   }

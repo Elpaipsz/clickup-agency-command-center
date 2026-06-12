@@ -3,6 +3,7 @@
 import useSWR from 'swr';
 import React, { useState } from 'react';
 import TaskModal from './TaskModal';
+import Loader from './Loader';
 import { ProcessedTask } from '@/types';
 
 export default function AgencyDashboard() {
@@ -68,9 +69,8 @@ export default function AgencyDashboard() {
 
   if (loading) {
     return (
-      <div className="flex flex-col items-center justify-center h-64 w-full glass-card rounded-xl">
-        <span className="material-symbols-outlined animate-spin text-[48px] text-secondary">sync</span>
-        <p className="mt-4 font-label-md text-label-md text-on-surface-variant">Cargando métricas en tiempo real...</p>
+      <div className="flex flex-col items-center justify-center min-h-[300px] w-full glass-panel p-lg rounded-xl">
+        <Loader />
       </div>
     );
   }
