@@ -10,58 +10,36 @@ const config: Config = {
   theme: {
     extend: {
       "colors": {
-        "primary-fixed": "#dae2fd",
-        "surface-container-low": "#eff4ff",
-        "on-tertiary": "#ffffff",
-        "on-tertiary-fixed": "#23005c",
-        "on-surface-variant": "#45464d",
-        "on-surface": "#0b1c30",
-        "secondary": "#0058be",
-        "on-secondary-container": "#fefcff",
-        "error-container": "#ffdad6",
-        "primary": "#000000",
-        "surface-bright": "#f8f9ff",
-        "secondary-container": "#2170e4",
-        "on-primary": "#ffffff",
-        "surface": "#f8f9ff",
-        "on-background": "#0b1c30",
-        "tertiary-fixed-dim": "#d0bcff",
-        "inverse-on-surface": "#eaf1ff",
-        "outline-variant": "#c6c6cd",
-        "on-secondary-fixed-variant": "#004395",
-        "on-error-container": "#93000a",
-        "on-tertiary-container": "#9466ff",
-        "on-primary-fixed": "#131b2e",
-        "inverse-primary": "#bec6e0",
-        "on-primary-container": "#7c839b",
-        "on-error": "#ffffff",
-        "background": "#f8f9ff",
-        "tertiary": "#000000",
-        "outline": "#76777d",
-        "tertiary-container": "#23005c",
-        "surface-container-highest": "#d3e4fe",
-        "inverse-surface": "#213145",
-        "tertiary-fixed": "#e9ddff",
-        "surface-container": "#e5eeff",
-        "secondary-fixed": "#d8e2ff",
-        "surface-dim": "#cbdbf5",
-        "primary-fixed-dim": "#bec6e0",
-        "on-primary-fixed-variant": "#3f465c",
-        "on-secondary-fixed": "#001a42",
-        "surface-container-high": "#dce9ff",
-        "primary-container": "#131b2e",
-        "on-tertiary-fixed-variant": "#5516be",
-        "surface-variant": "#d3e4fe",
-        "surface-tint": "#565e74",
-        "error": "#ba1a1a",
-        "on-secondary": "#ffffff",
-        "surface-container-lowest": "#ffffff",
-        "secondary-fixed-dim": "#adc6ff"
+        "primary": "#B47CFD", // Vivid Lavender
+        "on-primary": "#FFFFFF", // Full White
+        "secondary": "#B47CFD", // Vivid Lavender
+        "on-secondary": "#FFFFFF", // Full White
+        "background": "#0A0118", // Black Russian
+        "on-background": "#FFFFFF", // Full White
+        "surface": "#241A30", // Prune
+        "on-surface": "#FFFFFF", // Full White
+        "on-surface-variant": "#E9E9E9", // White Echo
+        "outline": "#B47CFD", // Vivid Lavender
+        "outline-variant": "rgba(180, 124, 253, 0.2)", // Subtle Lavender border
+        "surface-container-lowest": "#0A0118", // Black Russian
+        "surface-container-low": "#120A24", // Deep Violet Black
+        "surface-container": "#241A30", // Prune
+        "surface-container-high": "rgba(36, 26, 48, 0.8)", // Semi-transparent Prune
+        "surface-container-highest": "rgba(36, 26, 48, 0.95)",
+        "surface-bright": "#241A30", // Prune
+        "primary-fixed": "#B47CFD",
+        "on-primary-fixed": "#FFFFFF",
+        "secondary-fixed": "#B47CFD",
+        "on-secondary-fixed": "#FFFFFF",
+        "error": "#F85149",
+        "on-error": "#FFFFFF",
+        "error-container": "rgba(248, 81, 73, 0.15)",
+        "on-error-container": "#F85149",
       },
       "borderRadius": {
-        "DEFAULT": "0.25rem",
-        "lg": "0.5rem",
-        "xl": "0.75rem",
+        "DEFAULT": "12px",
+        "lg": "16px",
+        "xl": "24px",
         "full": "9999px"
       },
       "spacing": {
@@ -78,15 +56,15 @@ const config: Config = {
         "gutter": "24px"
       },
       "fontFamily": {
-        "label-md": ["Geist", "sans-serif"],
-        "body-sm": ["Geist", "sans-serif"],
-        "headline-md": ["Geist", "sans-serif"],
-        "headline-lg": ["Geist", "sans-serif"],
-        "display-lg": ["Geist", "sans-serif"],
-        "mono-data": ["Geist Mono", "monospace"],
-        "headline-lg-mobile": ["Geist", "sans-serif"],
-        "body-lg": ["Geist", "sans-serif"],
-        "body-md": ["Geist", "sans-serif"]
+        "label-md": ["var(--font-figtree)", "Figtree", "sans-serif"],
+        "body-sm": ["var(--font-figtree)", "Figtree", "sans-serif"],
+        "headline-md": ["Adam", "var(--font-figtree)", "sans-serif"],
+        "headline-lg": ["Aire Pro", "var(--font-figtree)", "sans-serif"],
+        "display-lg": ["Aire Pro", "var(--font-figtree)", "sans-serif"],
+        "mono-data": ["Fira Code", "monospace"],
+        "headline-lg-mobile": ["Aire Pro", "var(--font-figtree)", "sans-serif"],
+        "body-lg": ["var(--font-figtree)", "Figtree", "sans-serif"],
+        "body-md": ["var(--font-figtree)", "Figtree", "sans-serif"]
       },
       "fontSize": {
         "label-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600" }],
