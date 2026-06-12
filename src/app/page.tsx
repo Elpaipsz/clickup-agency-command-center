@@ -12,7 +12,7 @@ export default function Page() {
       </header>
 
       {/* Dashboard Canvas */}
-      <div className="p-6 md:p-8 flex-1 max-w-container-max mx-auto w-full">
+      <div className="p-6 md:p-8 flex-1 max-w-container-max w-full">
         <header className="mb-8 flex justify-between items-end">
           <div>
             <h2 className="font-display-lg text-display-lg text-on-surface mb-1">Resumen de Rendimiento</h2>

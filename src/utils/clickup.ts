@@ -78,6 +78,17 @@ export async function getWorkspaceMembers(teamId: string, token: string) {
 }
 
 /**
+ * Obtiene los espacios de un Workspace.
+ */
+export async function getSpaces(teamId: string, token: string) {
+  const data = await clickUpFetch<{ spaces: Array<{ id: string; name: string }> }>(
+    `/team/${teamId}/space?archived=false`, 
+    token
+  );
+  return data.spaces || [];
+}
+
+/**
  * Obtiene la jerarquía completa (Spaces -> Folders -> Lists) de un Workspace.
  */
 export async function getWorkspaceHierarchy(teamId: string, token: string) {
@@ -154,7 +165,8 @@ export async function fetchAllTasks(teamId: string, token: string): Promise<Clic
   const limit = 100;
 
   while (hasMore) {
-    const endpoint = `/team/${teamId}/task?page=${page}&limit=${limit}&subtasks=true`;
+    // Agregamos date_created_gt para traer las tareas activas sin límite de tiempo (ClickUp corta a 100 días por defecto)
+    const endpoint = `/team/${teamId}/task?page=${page}&limit=${limit}&subtasks=true&date_created_gt=946684800000`;
     const data = await clickUpFetch<{ tasks: ClickUpTask[] }>(endpoint, token);
     
     if (data.tasks && data.tasks.length > 0) {
@@ -168,7 +180,8 @@ export async function fetchAllTasks(teamId: string, token: string): Promise<Clic
       hasMore = false;
     }
 
-    if (page > 10) {
+    if (page > 50) {
+      // Un límite de seguridad muy alto (5000 tareas activas) para no trabar el sistema
       break;
     }
   }

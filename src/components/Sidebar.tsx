@@ -20,9 +20,9 @@ export default function Sidebar() {
   return (
     <nav className="hidden md:flex fixed left-0 top-0 h-full flex-col p-md gap-sm w-[280px] z-40 bg-surface-container-low shadow-md">
       {/* Header */}
-      <div className="px-md py-lg mb-md flex items-center gap-md border-b border-outline-variant/30">
-        <div className="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-on-primary-fixed font-headline-md">
-          <span className="material-symbols-outlined">dashboard</span>
+      <div className="px-md py-lg mb-md flex flex-col gap-sm border-b border-outline-variant/30">
+        <div className="w-[180px] h-[60px] relative">
+          <img src="/logo.png" alt="Command Center Logo" className="object-contain w-full h-full" />
         </div>
         <div>
           <h1 className="font-headline-md text-headline-md font-black text-on-surface tracking-tight">Command Center</h1>

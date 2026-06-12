@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getListStatuses } from '@/utils/clickup';
+import { resolveClickUpToken } from '@/utils/serverSettings';
 
 export async function GET(request: NextRequest) {
   try {
-    let token = request.headers.get('Authorization') || request.headers.get('x-clickup-token');
-    if (!token) {
-      token = process.env.CLICKUP_API_TOKEN || null;
-    }
+    const requestToken = request.headers.get('x-clickup-token');
+    const token = resolveClickUpToken(requestToken);
 
     if (!token || token.includes('your_clickup_api_token_here')) {
       return NextResponse.json(

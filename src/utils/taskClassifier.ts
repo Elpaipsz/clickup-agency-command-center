@@ -3,9 +3,12 @@ import { ClickUpTask, ProcessedTask, TaskArea, DashboardData } from '../types';
 /**
  * Normaliza y extrae el nombre del cliente a partir del nombre de la tarea o de su padre.
  */
-export function extractClient(task: ClickUpTask, parentName?: string | null): string {
+export function extractClient(task: any, parentName?: string | null): string {
   if (task.folder && task.folder.name && task.folder.name.toLowerCase() !== 'hidden') {
     return task.folder.name.trim();
+  }
+  if (task.space && task.space.name) {
+    return task.space.name.trim();
   }
   if (task.list && task.list.name) {
     return task.list.name.trim();

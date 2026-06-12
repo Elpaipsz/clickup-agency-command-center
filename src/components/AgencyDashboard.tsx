@@ -93,7 +93,7 @@ export default function AgencyDashboard() {
   return (
     <div className="bento-grid">
       {/* KPI Cards Row */}
-      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 group">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-primary/50 to-transparent"></div>
         <div className="flex justify-between items-start mb-md">
           <h3 className="font-label-md text-label-md text-on-surface-variant/70 uppercase tracking-[0.12em]">Total Activas</h3>
@@ -107,7 +107,7 @@ export default function AgencyDashboard() {
         </div>
       </div>
       
-      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_0_20px_rgba(248,81,73,0.02)]">
+      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 group">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-error/50 to-transparent"></div>
         <div className="flex justify-between items-start mb-md">
           <h3 className="font-label-md text-label-md text-on-surface-variant/70 uppercase tracking-[0.12em]">Tareas Críticas</h3>
@@ -121,7 +121,7 @@ export default function AgencyDashboard() {
         </div>
       </div>
       
-      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.15)]">
+      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 group">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#FF9800]/50 to-transparent"></div>
         <div className="flex justify-between items-start mb-md">
           <h3 className="font-label-md text-label-md text-on-surface-variant/70 uppercase tracking-[0.12em]">Vencidas</h3>
@@ -135,7 +135,7 @@ export default function AgencyDashboard() {
         </div>
       </div>
       
-      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 relative overflow-hidden group shadow-[inset_0_1px_1px_rgba(255,255,255,0.15),0_0_20px_rgba(63,185,80,0.02)]">
+      <div className="col-span-12 md:col-span-3 glass-card p-lg flex flex-col justify-between hover:translate-y-[-2px] transition-all duration-300 group">
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#3FB950]/50 to-transparent"></div>
         <div className="flex justify-between items-start mb-md">
           <h3 className="font-label-md text-label-md text-on-surface-variant/70 uppercase tracking-[0.12em]">Completadas</h3>
@@ -150,7 +150,7 @@ export default function AgencyDashboard() {
       </div>
 
       {/* Workload Distribution */}
-      <div className="col-span-12 md:col-span-6 glass-card rounded-xl flex flex-col h-[350px]">
+      <div className="col-span-12 md:col-span-6 glass-card flex flex-col h-[350px]">
         <div className="p-lg border-b border-outline-variant/30">
           <h3 className="font-headline-md text-headline-md text-on-surface">Distribución de Carga</h3>
           <p className="font-body-sm text-body-sm text-on-surface-variant">Porcentaje de tareas por departamento</p>
@@ -158,7 +158,7 @@ export default function AgencyDashboard() {
         <div className="p-lg flex-1 flex flex-col justify-center gap-md">
           {Object.entries(areas).map(([name, data]: [string, any], index) => {
              const percent = getPercent(data.total);
-             const colors = ['bg-secondary', 'bg-primary-fixed-dim', 'bg-tertiary-fixed-dim', 'bg-outline-variant'];
+             const colors = ['bg-[#B47CFD]', 'bg-indigo-400', 'bg-pink-400', 'bg-purple-500'];
              return (
                <div key={name}>
                  <div className="flex justify-between mb-xs">
@@ -166,7 +166,7 @@ export default function AgencyDashboard() {
                    <span className="font-mono-data text-mono-data text-on-surface-variant">{percent}% ({data.total})</span>
                  </div>
                  <div className="w-full bg-surface-container-low rounded-full h-2">
-                   <div className={`${colors[index % colors.length]} h-2 rounded-full`} style={{ width: `${percent}%` }}></div>
+                   <div className={`${colors[index % colors.length]} h-2 rounded-full shadow-[0_0_8px_rgba(180,124,253,0.3)]`} style={{ width: `${percent}%` }}></div>
                  </div>
                </div>
              );
@@ -175,31 +175,69 @@ export default function AgencyDashboard() {
       </div>
 
       {/* Bottleneck Heatmap */}
-      <div className="col-span-12 md:col-span-6 glass-card rounded-xl flex flex-col h-[350px]">
-        <div className="p-lg border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-lowest sticky top-0">
+      <div className="col-span-12 md:col-span-6 glass-card flex flex-col h-[350px]">
+        <div className="p-lg border-b border-white/[0.08] flex justify-between items-center bg-white/[0.02] sticky top-0">
           <div>
             <h3 className="font-headline-md text-headline-md text-on-surface">Radar de Cuellos de Botella</h3>
             <p className="font-body-sm text-body-sm text-on-surface-variant">Tareas críticas o vencidas por departamento</p>
           </div>
           <span className="material-symbols-outlined text-error">warning</span>
         </div>
-        <div className="p-lg flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-sm">
+        <div className="p-md md:p-lg flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-md">
           {Object.entries(areas).map(([name, data]: [string, any]) => {
              if (data.critical === 0) return null;
-             // Calculate severity
+             
+             // Calculate severity relative to maximum bottleneck
              const maxCritical = Math.max(...Object.values(areas).map((a: any) => a.critical)) || 1;
-             const widthPercent = Math.max(10, Math.round((data.critical / maxCritical) * 100));
-             const isHigh = data.critical >= 5;
+             const ratio = data.critical / maxCritical;
+             
+             let severityLabel = 'Bajo';
+             let severityColors = 'text-primary border border-primary/30 bg-primary/10';
+             let rowColors = 'bg-white/[0.02] border-white/10';
+             let numberColors = 'text-primary';
+             let barGradient = 'from-primary/50 to-primary';
+
+             if (ratio >= 0.7) {
+               severityLabel = 'Crítico';
+               severityColors = 'text-error border border-error/30 bg-error/10 shadow-[0_0_8px_rgba(248,81,73,0.15)]';
+               rowColors = 'bg-error-container/10 border-error/30';
+               numberColors = 'text-error';
+               barGradient = 'from-error/50 to-error';
+             } else if (ratio >= 0.3) {
+               severityLabel = 'Alto';
+               severityColors = 'text-[#FF9800] border border-[#FF9800]/30 bg-[#FF9800]/10 shadow-[0_0_8px_rgba(255,152,0,0.15)]';
+               rowColors = 'bg-[#FF9800]/5 border-[#FF9800]/20';
+               numberColors = 'text-[#FF9800]';
+               barGradient = 'from-[#FF9800]/50 to-[#FF9800]';
+             } else {
+               severityLabel = 'Medio';
+               severityColors = 'text-[#D29922] border border-[#D29922]/30 bg-[#D29922]/10';
+               rowColors = 'bg-white/[0.02] border-white/10';
+               numberColors = 'text-[#D29922]';
+               barGradient = 'from-[#D29922]/50 to-[#D29922]';
+             }
+             
+             const widthPercent = Math.max(5, Math.round(ratio * 100));
              
              return (
-               <div key={`critical-${name}`} className={`flex items-center gap-md p-sm rounded border ${isHigh ? 'bg-error-container/20 border-error-container/50' : 'bg-surface-container-highest border-outline-variant/30'}`}>
-                 <div className="w-24 font-label-md text-label-md text-on-surface">{name}</div>
-                 <div className="flex-1 flex gap-xs">
-                   <div className={`h-6 rounded flex items-center justify-center font-mono-data text-xs ${isHigh ? 'bg-error-container text-on-error-container' : 'bg-surface-tint/20 text-on-surface-variant'}`} style={{ width: `${widthPercent}%` }}>
-                     {isHigh ? 'Alto' : 'Medio'}
-                   </div>
+               <div key={`critical-${name}`} className={`flex items-center justify-between p-md rounded-xl border transition-all ${rowColors} hover:bg-white/[0.05] relative overflow-hidden group`}>
+                 <div className="font-label-md text-label-md text-on-surface tracking-wide relative z-10">{name}</div>
+                 <div className="flex items-center gap-md relative z-10">
+                   <span className={`font-mono-data text-[10px] uppercase font-bold px-2 py-0.5 rounded-full ${severityColors}`}>
+                     {severityLabel}
+                   </span>
+                   <span className={`font-mono-data text-[18px] font-black ${numberColors}`}>
+                     {data.critical}
+                   </span>
                  </div>
-                 <div className={`font-mono-data text-mono-data font-bold ${isHigh ? 'text-on-error-container' : 'text-on-surface-variant'}`}>{data.critical}</div>
+                 
+                 {/* Progress Bar (Absolute at bottom) */}
+                 <div className="absolute bottom-0 left-0 right-0 h-1 bg-black/50 overflow-hidden">
+                   <div 
+                     className={`h-full transition-all duration-1000 ease-out bg-gradient-to-r ${barGradient}`} 
+                     style={{ width: `${widthPercent}%` }}
+                   />
+                 </div>
                </div>
              );
           })}
@@ -215,7 +253,7 @@ export default function AgencyDashboard() {
 
 
       {/* Global Pipeline Table */}
-      <div className="col-span-12 glass-card rounded-xl flex flex-col max-h-[600px] mt-md">
+      <div className="col-span-12 glass-card flex flex-col max-h-[600px] mt-md">
         <div className="p-lg border-b border-outline-variant/30 flex flex-col gap-md bg-surface-container-lowest sticky top-0 z-30">
           <div className="flex justify-between items-start md:items-center">
             <div>

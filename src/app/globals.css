@@ -23,12 +23,12 @@
   .glass-card {
     position: relative;
     overflow: hidden;
-    background: var(--bg-card);
-    backdrop-filter: var(--backdrop-blur);
-    -webkit-backdrop-filter: var(--backdrop-blur);
-    border: 1px solid var(--border-glass);
-    border-radius: 24px;
-    box-shadow: var(--shadow-premium);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: 1px solid var(--glass-border);
+    border-radius: 20px;
+    box-shadow: var(--glass-shadow);
     transition: var(--transition-smooth);
   }
   
@@ -57,8 +57,8 @@
   }
 
   .glass-card:hover {
-    border-color: var(--border-glass-active);
-    box-shadow: 0 16px 48px 0 rgba(0, 0, 0, 0.6), var(--glow-lavender);
+    background: var(--glass-bg-hover);
+    border-color: rgba(255, 255, 255, 0.2);
   }
 
   /* Glint effect for buttons */
@@ -128,7 +128,15 @@
   /* Shadows & Glass */
   --shadow-premium: 0 16px 48px 0 rgba(0, 0, 0, 0.6);
   --glow-lavender: 0 0 24px rgba(180, 124, 253, 0.15);
-  --backdrop-blur: blur(28px); /* Higher density blur for esmerilated look */
+  
+  /* TypeUI Glassmorphism Tokens (Dark) */
+  --glass-bg: rgba(255, 255, 255, 0.05); 
+  --glass-bg-hover: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.12);
+  --glass-border-subtle: rgba(255, 255, 255, 0.06);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2), inset 0 -1px 0 rgba(255, 255, 255, 0.05);
+  --glass-blur: blur(20px);
+  
   --transition-smooth: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -394,53 +402,5 @@ select option {
   }
 }
 
-/* Ensure backdrop blur and edge highlights are automatically applied to all surface background classes globally */
-.bg-surface,
-.bg-surface-container,
-.bg-surface-container-low,
-.bg-surface-container-lowest,
-.bg-surface-container-high,
-.bg-surface-container-highest,
-.bg-surface-bright {
-  position: relative;
-  overflow: hidden;
-  backdrop-filter: var(--backdrop-blur) !important;
-  -webkit-backdrop-filter: var(--backdrop-blur) !important;
-}
 
-.bg-surface::before,
-.bg-surface-container::before,
-.bg-surface-container-low::before,
-.bg-surface-container-lowest::before,
-.bg-surface-container-high::before,
-.bg-surface-container-highest::before,
-.bg-surface-bright::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  pointer-events: none;
-  z-index: 1;
-}
-
-.bg-surface::after,
-.bg-surface-container::after,
-.bg-surface-container-low::after,
-.bg-surface-container-lowest::after,
-.bg-surface-container-high::after,
-.bg-surface-container-highest::after,
-.bg-surface-bright::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 1px;
-  bottom: 0;
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent, rgba(255, 255, 255, 0.05));
-  pointer-events: none;
-  z-index: 1;
-}
 

@@ -41,7 +41,12 @@ export default function TaskBoard({ departmentTitle, departmentKey }: { departme
 
   const getPriorityBadge = (task: ProcessedTask) => {
     if (task.isCritical) {
-      return <span className="px-sm py-xs rounded-full bg-error/10 text-error font-mono-data text-[10px] uppercase tracking-wider">Crítica</span>;
+      return (
+        <span className="px-3 py-1 rounded-full bg-error/20 border border-error/50 text-error font-label-lg font-black uppercase tracking-widest shadow-[0_0_12px_rgba(248,81,73,0.3)] flex items-center gap-1">
+          <span className="material-symbols-outlined text-[16px]">warning</span>
+          CRÍTICA
+        </span>
+      );
     }
     if (task.priority === 'urgent') return <span className="px-sm py-xs rounded-full bg-[#f44336]/10 text-[#f44336] font-mono-data text-[10px] uppercase tracking-wider">Urgente</span>;
     if (task.priority === 'high') return <span className="px-sm py-xs rounded-full bg-[#ff9800]/10 text-[#ff9800] font-mono-data text-[10px] uppercase tracking-wider">Alta</span>;
@@ -174,7 +179,7 @@ export default function TaskBoard({ departmentTitle, departmentKey }: { departme
       </div>
 
       {clients.length === 0 ? (
-        <div className="glass-card p-12 text-center rounded-xl border border-outline-variant">
+        <div className="glass-card p-12 text-center">
           <span className="material-symbols-outlined text-[48px] text-on-surface-variant mb-4">check_circle</span>
           <h3 className="font-headline-md text-on-surface">No hay tareas activas</h3>
           <p className="text-on-surface-variant font-body-sm">Todo está al día en este departamento.</p>
@@ -193,7 +198,7 @@ export default function TaskBoard({ departmentTitle, departmentKey }: { departme
                 <button 
                   key={clientName} 
                   onClick={() => setSelectedClient(clientName)} 
-                  className={`flex flex-col text-left p-md rounded-xl transition-all duration-300 min-w-[200px] md:min-w-0 border ${isSelected ? 'bg-secondary text-on-secondary border-secondary shadow-md scale-[1.02]' : 'bg-surface border-outline-variant hover:bg-surface-variant'}`}
+                  className={`flex flex-col text-left p-md transition-all duration-300 min-w-[200px] md:min-w-0 ${isSelected ? 'glass-card bg-primary/20 border-primary/50 shadow-md scale-[1.02]' : 'glass-card hover:bg-white/[0.08]'}`}
                 >
                   <div className="flex justify-between items-start mb-xs">
                     <span className="font-label-md text-label-md truncate pr-2">{clientName}</span>
@@ -210,10 +215,10 @@ export default function TaskBoard({ departmentTitle, departmentKey }: { departme
           </div>
 
           {/* Task List for Selected Client */}
-          <div className="flex-1 flex flex-col bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden">
+          <div className="flex-1 flex flex-col glass-card overflow-hidden">
             {selectedClient && areaData.clients[selectedClient] ? (
               <>
-                <div className="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface-bright sticky top-0 z-10">
+                <div className="px-lg py-md border-b border-white/[0.08] flex justify-between items-center bg-white/[0.02] sticky top-0 z-10">
                   <div className="flex items-center gap-md">
                     <div className="w-8 h-8 rounded-full bg-primary-fixed text-on-primary-fixed flex items-center justify-center font-headline-md text-headline-md">
                       {selectedClient.charAt(0).toUpperCase()}
@@ -230,13 +235,12 @@ export default function TaskBoard({ departmentTitle, departmentKey }: { departme
                       <div 
                         key={task.id} 
                         onClick={() => setSelectedTask(task)} 
-                        className="flex flex-col md:flex-row items-start md:items-center justify-between p-lg rounded-xl border transition-all cursor-pointer group hover:shadow-md gap-md"
-                        style={{ 
-                          borderColor: task.isCritical ? 'var(--md-sys-color-error)' : `${hexColor}40`,
-                          backgroundColor: task.isCritical ? 'rgba(var(--md-sys-color-error-rgb), 0.05)' : `${hexColor}08`
-                        }}
+                        className="flex flex-col md:flex-row items-start md:items-center justify-between p-lg transition-all cursor-pointer group gap-md glass-card relative overflow-hidden"
                       >
-                        <div className="flex flex-col gap-sm flex-1 overflow-hidden w-full">
+                        {/* Status Color Strip */}
+                        <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: hexColor }}></div>
+                        
+                        <div className="flex flex-col gap-sm flex-1 overflow-hidden w-full pl-2">
                           <span className="font-headline-sm text-headline-sm text-on-surface line-clamp-2">{task.name}</span>
                           <div className="flex flex-wrap items-center gap-2">
                             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: hexColor }}></div>

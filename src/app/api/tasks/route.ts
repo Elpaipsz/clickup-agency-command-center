@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getWorkspaces, fetchAllTasks, createTask, updateTask, deleteTask } from '@/utils/clickup';
+import { getWorkspaces, getSpaces, fetchAllTasks, createTask, updateTask, deleteTask } from '@/utils/clickup';
 import { processTasks, buildDashboardData } from '@/utils/taskClassifier';
+import { resolveClickUpToken } from '@/utils/serverSettings';
 
 // GET: Obtener todas las tareas del dashboard
 export async function GET(request: NextRequest) {
   try {
-    let token = request.headers.get('Authorization') || request.headers.get('x-clickup-token');
-    if (!token) {
-      token = process.env.CLICKUP_API_TOKEN || null;
-    }
+    const requestToken = request.headers.get('x-clickup-token');
+    const token = resolveClickUpToken(requestToken);
 
     if (!token || token.includes('your_clickup_api_token_here')) {
       return NextResponse.json(
@@ -22,8 +21,20 @@ export async function GET(request: NextRequest) {
     
     for (const workspace of workspaces) {
       try {
+        const spaces = await getSpaces(workspace.id, token);
+        const spaceMap = new Map(spaces.map(s => [s.id, s.name]));
+        
         const tasks = await fetchAllTasks(workspace.id, token);
-        rawTasks = rawTasks.concat(tasks);
+        
+        // Adjuntar el nombre del espacio a cada tarea para que el clasificador pueda usarlo
+        const tasksWithSpaces = tasks.map(t => {
+          if (t.space && t.space.id && spaceMap.has(t.space.id)) {
+            return { ...t, space: { ...t.space, name: spaceMap.get(t.space.id) } };
+          }
+          return t;
+        });
+        
+        rawTasks = rawTasks.concat(tasksWithSpaces);
       } catch (err) {
         console.error(`Error al obtener tareas para el workspace ${workspace.name} (${workspace.id}):`, err);
       }
