@@ -46,17 +46,25 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
         </div>
         
         <div className="p-lg bg-surface/50">
-          <label className="block font-label-md text-on-surface-variant mb-2">
-            ClickUp API Token
-          </label>
-          <input 
-            type="password" 
-            value={token}
-            onChange={(e) => setToken(e.target.value)}
-            placeholder="pk_..."
-            className="w-full bg-surface border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg px-md py-sm text-on-surface font-body-md outline-none transition-colors"
-          />
-          <p className="mt-2 text-[11px] text-on-surface-variant/70 leading-tight">
+          <div className="relative mt-2">
+            <input 
+              type="password" 
+              id="clickup_token"
+              value={token}
+              onChange={(e) => setToken(e.target.value)}
+              placeholder=" "
+              className="peer w-full bg-background border border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary rounded-lg px-md py-md text-on-surface font-body-md outline-none transition-all placeholder-transparent"
+            />
+            <label 
+              htmlFor="clickup_token"
+              className="absolute left-md top-1/2 -translate-y-1/2 text-on-surface-variant/70 font-body-md transition-all pointer-events-none px-xs bg-[#241A30]
+              peer-focus:top-0 peer-focus:-translate-y-1/2 peer-focus:text-xs peer-focus:text-primary peer-focus:font-semibold
+              peer-[:not(:placeholder-shown)]:top-0 peer-[:not(:placeholder-shown)]:-translate-y-1/2 peer-[:not(:placeholder-shown)]:text-xs peer-[:not(:placeholder-shown)]:text-primary"
+            >
+              ClickUp API Token
+            </label>
+          </div>
+          <p className="mt-3 text-[11px] text-on-surface-variant/70 leading-tight">
             Puedes obtener tu token de API en ClickUp yendo a Settings {'>'} Apps. 
             El token se guarda de forma segura únicamente en tu navegador (localStorage).
           </p>

@@ -37,16 +37,16 @@ export default function Sidebar() {
           
           if (isActive) {
             return (
-              <Link key={link.href} href={link.href} className="flex items-center gap-md px-md py-md bg-secondary-container text-on-secondary-container rounded-lg shadow-sm duration-300 ease-in-out relative overflow-hidden">
-                <div className="absolute left-0 top-0 bottom-0 w-1 bg-secondary rounded-l-lg"></div>
+              <Link key={link.href} href={link.href} className="flex items-center gap-md px-md py-md bg-white/[0.05] text-primary border border-primary/30 rounded-xl shadow-md duration-300 ease-in-out relative overflow-hidden group">
+                <div className="absolute left-0 top-0 bottom-0 w-[3px] bg-primary rounded-l-xl"></div>
                 <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 1" }}>{link.icon}</span>
-                <span className="font-label-md text-label-md">{link.label}</span>
+                <span className="font-label-md text-label-md font-bold">{link.label}</span>
               </Link>
             );
           }
           
           return (
-            <Link key={link.href} href={link.href} className="flex items-center gap-md px-md py-md rounded-lg text-on-surface-variant hover:bg-surface-variant/50 hover:translate-x-1 transition-all duration-300 ease-in-out group">
+            <Link key={link.href} href={link.href} className="flex items-center gap-md px-md py-md rounded-xl text-on-surface-variant hover:bg-white/[0.02] hover:text-primary hover:border-white/[0.08] border border-transparent hover:translate-x-1 transition-all duration-300 ease-in-out group">
               <span className="material-symbols-outlined group-hover:text-primary transition-colors">{link.icon}</span>
               <span className="font-label-md text-label-md group-hover:text-primary transition-colors">{link.label}</span>
             </Link>
@@ -55,12 +55,12 @@ export default function Sidebar() {
       </div>
       
       {/* Footer Navigation */}
-      <div className="mt-auto pt-md border-t border-outline-variant/30 flex flex-col gap-xs px-xs">
-        <button onClick={() => setShowSettings(true)} className="flex items-center gap-md px-md py-md rounded-lg text-on-surface-variant hover:bg-surface-variant/50 hover:translate-x-1 transition-all duration-300 ease-in-out w-full text-left">
+      <div className="mt-auto pt-md border-t border-outline-variant/20 flex flex-col gap-xs px-xs">
+        <button onClick={() => setShowSettings(true)} className="flex items-center gap-md px-md py-md rounded-xl text-on-surface-variant hover:bg-white/[0.02] hover:text-primary hover:border-white/[0.08] border border-transparent hover:translate-x-1 transition-all duration-300 ease-in-out w-full text-left">
           <span className="material-symbols-outlined">settings</span>
           <span className="font-label-md text-label-md">Configuración</span>
         </button>
-        <Link href="#" className="flex items-center gap-md px-md py-md rounded-lg text-on-surface-variant hover:bg-surface-variant/50 hover:translate-x-1 transition-all duration-300 ease-in-out">
+        <Link href="#" className="flex items-center gap-md px-md py-md rounded-xl text-on-surface-variant hover:bg-white/[0.02] hover:text-primary hover:border-white/[0.08] border border-transparent hover:translate-x-1 transition-all duration-300 ease-in-out">
           <span className="material-symbols-outlined">help</span>
           <span className="font-label-md text-label-md">Ayuda</span>
         </Link>
