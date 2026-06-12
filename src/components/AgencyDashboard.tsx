@@ -102,8 +102,7 @@ export default function AgencyDashboard() {
         <div>
           <div className="font-display-lg text-display-lg text-on-surface font-black tracking-tight">{summary.totalTasks}</div>
           <div className="font-body-sm text-body-sm text-on-surface-variant/50 mt-xs flex items-center gap-xs">
-            <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
-            ClickUp Sync
+            Sincronizado con ClickUp
           </div>
         </div>
       </div>
@@ -112,15 +111,10 @@ export default function AgencyDashboard() {
         <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-error/50 to-transparent"></div>
         <div className="flex justify-between items-start mb-md">
           <h3 className="font-label-md text-label-md text-on-surface-variant/70 uppercase tracking-[0.12em]">Tareas Críticas</h3>
-          <span className="material-symbols-outlined text-error text-[20px] animate-pulse">warning</span>
+          <span className="material-symbols-outlined text-error text-[20px]">warning</span>
         </div>
         <div>
-          <div className="flex items-baseline gap-sm">
-            <div className="font-display-lg text-display-lg text-error font-black tracking-tight">{summary.criticalTasks}</div>
-            {summary.criticalTasks > 0 && (
-              <span className="pulse-indicator red"></span>
-            )}
-          </div>
+          <div className="font-display-lg text-display-lg text-error font-black tracking-tight">{summary.criticalTasks}</div>
           <div className="font-body-sm text-body-sm text-error/80 mt-xs flex items-center gap-xs">
             Requieren atención inmediata
           </div>
