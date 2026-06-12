@@ -35,8 +35,9 @@ export default function TaskBoard({ departmentTitle, departmentKey }: { departme
   };
 
   const { data, error, isLoading: loading, mutate } = useSWR('/api/tasks', fetcher, {
-    revalidateOnFocus: false, // Evitar recargar cada vez que cambia de pestaña del navegador
-    dedupingInterval: 60000, // Mantener cache por 60 segundos antes de intentar refetch de fondo
+    revalidateOnFocus: true,   // Refresca al volver a la pestaña
+    refreshInterval: 300000,   // Auto-refresca cada 5 minutos
+    dedupingInterval: 60000,
   });
 
   const getPriorityBadge = (task: ProcessedTask) => {

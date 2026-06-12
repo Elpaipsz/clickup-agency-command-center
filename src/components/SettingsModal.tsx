@@ -12,6 +12,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
   const [showToken, setShowToken] = useState(false);
   const [currentTokenMasked, setCurrentTokenMasked] = useState('');
   const [hasToken, setHasToken] = useState(false);
+  const [isVercel, setIsVercel] = useState(false);
   const [status, setStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
@@ -29,6 +30,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
       if (res.ok) {
         const data = await res.json();
         setHasToken(data.hasToken);
+        setIsVercel(data.isVercel || false);
         setCurrentTokenMasked(data.tokenMasked || '');
       }
     } catch {}
@@ -123,11 +125,29 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             )}
           </div>
 
-          {/* Token Input */}
-          <div className="flex flex-col gap-sm">
-            <label className="font-label-md text-white/70 text-sm">
-              {hasToken ? 'Actualizar API Token' : 'Ingresar API Token'}
-            </label>
+          {/* Token Input — or Vercel instructions */}
+          {isVercel ? (
+            <div className="flex flex-col gap-sm p-md rounded-xl bg-[#1a1200] border border-yellow-500/30">
+              <div className="flex items-center gap-sm">
+                <span className="material-symbols-outlined text-yellow-400 text-[20px]">info</span>
+                <p className="font-label-md font-bold text-yellow-300">Corriendo en Vercel</p>
+              </div>
+              <p className="text-[12px] text-white/60 leading-relaxed">
+                En Vercel no se puede guardar archivos locales. Para conectar tu ClickUp:
+              </p>
+              <ol className="text-[12px] text-white/70 leading-loose list-decimal list-inside space-y-1">
+                <li>Ve a tu proyecto en <strong className="text-white">vercel.com</strong></li>
+                <li>Entra a <strong className="text-white">Settings → Environment Variables</strong></li>
+                <li>Agrega la variable: <code className="bg-white/10 px-1 rounded text-yellow-300">CLICKUP_API_TOKEN</code></li>
+                <li>Pega tu token y guarda</li>
+                <li>Haz <strong className="text-white">Redeploy</strong> del proyecto</li>
+              </ol>
+            </div>
+          ) : (
+            <div className="flex flex-col gap-sm">
+              <label className="font-label-md text-white/70 text-sm">
+                {hasToken ? 'Actualizar API Token' : 'Ingresar API Token'}
+              </label>
             <div className="relative">
               <input
                 type={showToken ? 'text' : 'password'}
@@ -154,6 +174,7 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
               ✅ El token se guarda <strong className="text-white/60">en el servidor</strong>, no en el navegador. Persistirá aunque cierres el browser.
             </p>
           </div>
+          )}
 
           {/* Status feedback */}
           {status === 'saved' && (
@@ -176,25 +197,27 @@ export default function SettingsModal({ isOpen, onClose }: SettingsModalProps) {
             onClick={onClose}
             className="px-md py-sm rounded-lg font-label-md text-white/60 hover:text-white hover:bg-white/10 transition-colors"
           >
-            Cancelar
+            Cerrar
           </button>
-          <button
-            onClick={handleSave}
-            disabled={!token.trim() || status === 'saving'}
-            className="px-md py-sm rounded-lg font-label-md bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-xs"
-          >
-            {status === 'saving' ? (
-              <>
-                <span className="material-symbols-outlined animate-spin text-[16px]">progress_activity</span>
-                Guardando...
-              </>
-            ) : (
-              <>
-                <span className="material-symbols-outlined text-[16px]">save</span>
-                Guardar en servidor
-              </>
-            )}
-          </button>
+          {!isVercel && (
+            <button
+              onClick={handleSave}
+              disabled={!token.trim() || status === 'saving'}
+              className="px-md py-sm rounded-lg font-label-md bg-primary text-on-primary hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-40 disabled:cursor-not-allowed flex items-center gap-xs"
+            >
+              {status === 'saving' ? (
+                <>
+                  <span className="material-symbols-outlined animate-spin text-[16px]">progress_activity</span>
+                  Guardando...
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined text-[16px]">save</span>
+                  Guardar en servidor
+                </>
+              )}
+            </button>
+          )}
         </div>
       </div>
     </div>

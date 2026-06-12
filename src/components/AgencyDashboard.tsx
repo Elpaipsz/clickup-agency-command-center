@@ -22,7 +22,8 @@ export default function AgencyDashboard() {
   };
 
   const { data, error, isLoading: loading, mutate } = useSWR('/api/tasks', fetcher, {
-    revalidateOnFocus: false,
+    revalidateOnFocus: true,   // Refresca al volver a la pestaña
+    refreshInterval: 300000,   // Auto-refresca cada 5 minutos
     dedupingInterval: 60000,
   });
 

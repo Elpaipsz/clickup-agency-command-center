@@ -1,39 +1,26 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { resolveClickUpToken, writeSettings, isVercel } from '@/utils/serverSettings';
 
-const SETTINGS_FILE = path.join(process.cwd(), 'data', 'settings.json');
-
-function readSettings(): Record<string, string> {
-  try {
-    if (!fs.existsSync(SETTINGS_FILE)) return {};
-    const raw = fs.readFileSync(SETTINGS_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch {
-    return {};
-  }
-}
-
-function writeSettings(data: Record<string, string>) {
-  const dir = path.dirname(SETTINGS_FILE);
-  if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(SETTINGS_FILE, JSON.stringify(data, null, 2), 'utf-8');
-}
-
-// GET: Returns current settings (masked token)
+// GET: Returns current token status
 export async function GET() {
-  const settings = readSettings();
-  const token = settings.clickup_token || process.env.CLICKUP_API_TOKEN || '';
+  const token = resolveClickUpToken();
   return NextResponse.json({
     hasToken: !!token,
-    // Return a masked version so the UI can show it's configured
+    isVercel: isVercel(),
     tokenMasked: token ? `${token.slice(0, 6)}${'•'.repeat(20)}${token.slice(-4)}` : '',
   });
 }
 
-// POST: Save settings
+// POST: Save settings (only works locally, not on Vercel)
 export async function POST(request: NextRequest) {
   try {
+    if (isVercel()) {
+      return NextResponse.json(
+        { error: 'VERCEL_ENV', message: 'En Vercel, configura CLICKUP_API_TOKEN en las variables de entorno del proyecto.' },
+        { status: 400 }
+      );
+    }
+
     const body = await request.json();
     const { clickup_token } = body;
 
@@ -41,9 +28,10 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Token inválido.' }, { status: 400 });
     }
 
-    const settings = readSettings();
-    settings.clickup_token = clickup_token.trim();
-    writeSettings(settings);
+    const success = writeSettings({ clickup_token: clickup_token.trim() });
+    if (!success) {
+      return NextResponse.json({ error: 'No se pudo escribir el archivo de configuración.' }, { status: 500 });
+    }
 
     return NextResponse.json({ success: true, message: 'Token guardado correctamente en el servidor.' });
   } catch (err: any) {
@@ -53,8 +41,9 @@ export async function POST(request: NextRequest) {
 
 // DELETE: Remove token
 export async function DELETE() {
-  const settings = readSettings();
-  delete settings.clickup_token;
-  writeSettings(settings);
+  if (isVercel()) {
+    return NextResponse.json({ error: 'En Vercel, elimina la variable desde el dashboard.' }, { status: 400 });
+  }
+  writeSettings({});
   return NextResponse.json({ success: true });
 }
