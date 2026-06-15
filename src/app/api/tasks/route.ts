@@ -119,8 +119,13 @@ export async function PUT(request: NextRequest) {
       return NextResponse.json({ error: 'Autorización requerida.' }, { status: 401 });
     }
 
+    const { searchParams } = new URL(request.url);
+    const queryTaskId = searchParams.get('id');
+
     const body = await request.json();
-    const { taskId, name, description, assignees, priority, dueDate, status } = body;
+    const { taskId: bodyTaskId, name, description, assignees, priority, dueDate, status } = body;
+
+    const taskId = bodyTaskId || queryTaskId;
 
     if (!taskId) {
       return NextResponse.json({ error: 'El taskId es requerido.' }, { status: 400 });
