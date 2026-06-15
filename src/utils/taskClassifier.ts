@@ -137,12 +137,10 @@ export function processTasks(clickUpTasks: ClickUpTask[]): ProcessedTask[] {
     const dueDate = t.due_date ? new Date(parseInt(t.due_date)) : null;
     const dueDateTimeStamp = t.due_date ? parseInt(t.due_date) : null;
 
-    // Alertas críticas (Semáforo Rojo)
     const now = new Date();
     const isExpired = dueDate ? (dueDate < now && t.status?.type !== 'closed') : false;
     const isUnassigned = !t.assignees || t.assignees.length === 0;
     const isNoDueDate = !t.due_date;
-    const isCritical = isExpired || isUnassigned || isNoDueDate;
 
     // Normalizar prioridad
     let priority: 'urgent' | 'high' | 'normal' | 'low' | 'none' = 'none';
@@ -164,6 +162,9 @@ export function processTasks(clickUpTasks: ClickUpTask[]): ProcessedTask[] {
         priorityColor = '#8bc34a'; // Verde
       }
     }
+
+    // Tarea crítica si su prioridad en ClickUp es urgente (semáforo rojo)
+    const isCritical = priority === 'urgent';
 
     return {
       id: t.id,
