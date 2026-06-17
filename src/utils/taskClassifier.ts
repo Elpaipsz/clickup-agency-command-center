@@ -24,10 +24,12 @@ export function classifyArea(task: any, parentName?: string | null): TaskArea {
   const desc = (task.description || '').toLowerCase();
   const parent = (parentName || '').toLowerCase();
   
-  // --- SEÑAL PRIMARIA: nombre exacto de la lista de ClickUp ---
-  // Esto es la forma más confiable cuando los espacios tienen listas como "Web", "Pauta Publicitaria", etc.
+  // --- SEÑAL PRIMARIA: nombre del espacio, nombre exacto de la lista de ClickUp, etc. ---
   const listName = (task.list?.name || '').toLowerCase();
   const folderName = (task.folder?.name || '').toLowerCase();
+  const spaceName = (task.space?.name || '').toLowerCase();
+  
+  const isSpaceWeb = spaceName === 'proyectos web' || spaceName.includes('proyectos web');
   
   const isListWeb = listName === 'web' || listName.includes('proyectos web') || listName.includes('web dev');
   const isListPauta = listName === 'pauta publicitaria' || listName === 'pauta' || listName.includes('pauta') || listName.includes('ads');
@@ -37,6 +39,7 @@ export function classifyArea(task: any, parentName?: string | null): TaskArea {
   const isFolderPauta = folderName !== 'hidden' && (folderName.includes('pauta') || folderName.includes('ads'));
   const isFolderDiseno = folderName !== 'hidden' && (folderName.includes('diseño') || folderName.includes('diseno') || folderName.includes('contenido'));
 
+  if (isSpaceWeb) return 'Web';
   if (isListWeb || isFolderWeb) return 'Web';
   if (isListPauta || isFolderPauta) return 'Pauta Publicitaria';
   if (isListDiseno || isFolderDiseno) return 'Diseño y contenido';
