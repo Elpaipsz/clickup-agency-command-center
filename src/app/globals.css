@@ -1,20 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Figtree:wght@300;400;500;600;700;800;900&display=swap');
 
-@font-face {
-  font-family: 'Adam';
-  src: local('Adam'), url('/fonts/Adam.woff2') format('woff2'), url('/fonts/Adam.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Aire Pro';
-  src: local('Aire Pro'), url('/fonts/AirePro.woff2') format('woff2'), url('/fonts/AirePro.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

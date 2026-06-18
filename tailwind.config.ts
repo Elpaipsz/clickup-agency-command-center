@@ -58,11 +58,11 @@ const config: Config = {
       "fontFamily": {
         "label-md": ["var(--font-figtree)", "Figtree", "sans-serif"],
         "body-sm": ["var(--font-figtree)", "Figtree", "sans-serif"],
-        "headline-md": ["Adam", "var(--font-figtree)", "sans-serif"],
-        "headline-lg": ["Aire Pro", "var(--font-figtree)", "sans-serif"],
-        "display-lg": ["Aire Pro", "var(--font-figtree)", "sans-serif"],
+        "headline-md": ["var(--font-figtree)", "Figtree", "sans-serif"],
+        "headline-lg": ["var(--font-figtree)", "Figtree", "sans-serif"],
+        "display-lg": ["var(--font-figtree)", "Figtree", "sans-serif"],
         "mono-data": ["Fira Code", "monospace"],
-        "headline-lg-mobile": ["Aire Pro", "var(--font-figtree)", "sans-serif"],
+        "headline-lg-mobile": ["var(--font-figtree)", "Figtree", "sans-serif"],
         "body-lg": ["var(--font-figtree)", "Figtree", "sans-serif"],
         "body-md": ["var(--font-figtree)", "Figtree", "sans-serif"]
       },
