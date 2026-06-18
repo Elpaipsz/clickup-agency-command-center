@@ -75,8 +75,8 @@ export default function TaskModal({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-md p-4">
-      <div className="w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col bg-[#0A0118] border border-white/10 relative">
-        <div className="p-lg md:p-xl border-b border-white/[0.08] flex justify-between items-start bg-white/[0.02]">
+      <div className="w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col bg-[var(--bg-main)] border border-[var(--border-glass)] relative">
+        <div className="p-lg md:p-xl border-b border-[var(--border-glass)] flex justify-between items-start bg-surface/50">
           <div className="flex-1 pr-lg">
             <div className="flex items-center gap-xs mb-sm">
               <span className="font-mono-data text-mono-data text-on-surface-variant uppercase">{departmentTitle || task.area}</span>
@@ -92,29 +92,29 @@ export default function TaskModal({
                 <button 
                   onClick={() => !isUpdatingStatus && setIsDropdownOpen(!isDropdownOpen)}
                   disabled={isUpdatingStatus}
-                  className="flex items-center gap-2 px-md py-xs rounded-lg text-xs font-mono-data bg-[#1f162d] hover:bg-[#2b1f3c] transition-all shadow-md border border-white/10"
+                  className="flex items-center gap-2 px-md py-xs rounded-lg text-xs font-mono-data bg-[var(--bg-surface)] hover:bg-[var(--bg-card-hover)] transition-all shadow-md border border-[var(--border-glass)]"
                   style={{ borderLeft: `4px solid ${task.status.color}` }}
                 >
                   <span style={{ color: task.status.color }} className="font-bold tracking-wider">{task.status.name.toUpperCase()}</span>
-                  <span className="material-symbols-outlined text-[14px] text-white/50">{isDropdownOpen ? 'expand_less' : 'expand_more'}</span>
+                  <span className="material-symbols-outlined text-[14px] text-on-surface/50">{isDropdownOpen ? 'expand_less' : 'expand_more'}</span>
                 </button>
-
+ 
                 {isDropdownOpen && (
                   <>
                     <div className="fixed inset-0 z-10" onClick={() => setIsDropdownOpen(false)}></div>
-                    <div className="absolute top-full left-0 mt-2 w-64 bg-[#1f162d] border border-white/10 rounded-xl shadow-2xl z-20 py-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
+                    <div className="absolute top-full left-0 mt-2 w-64 bg-[var(--bg-surface)] border border-[var(--border-glass)] rounded-xl shadow-2xl z-20 py-sm overflow-hidden animate-in fade-in zoom-in-95 duration-200">
                       
                       {/* Search Bar */}
-                      <div className="px-sm pb-sm border-b border-white/10">
+                      <div className="px-sm pb-sm border-b border-[var(--border-glass)]">
                         <input 
                           type="text" 
                           placeholder="Buscar..." 
                           value={statusSearch}
                           onChange={(e) => setStatusSearch(e.target.value)}
-                          className="w-full bg-[#0A0118] border border-white/10 focus:border-primary focus:ring-1 focus:ring-primary rounded-lg px-sm py-xs text-white font-body-sm outline-none transition-colors placeholder:text-white/30"
+                          className="w-full bg-[var(--bg-main)] border border-[var(--border-glass)] focus:border-primary focus:ring-1 focus:ring-primary rounded-lg px-sm py-xs text-[var(--text-primary)] font-body-sm outline-none transition-colors placeholder:text-[var(--text-muted)]"
                         />
                       </div>
-
+ 
                       <div className="max-h-64 overflow-y-auto custom-scrollbar">
                         {isLoadingStatuses ? (
                           <div className="p-md flex justify-center items-center">
@@ -141,12 +141,12 @@ export default function TaskModal({
                             if (!grouped[s.type]) grouped[s.type] = [];
                             grouped[s.type].push(s);
                           });
-
+ 
                           return ['open', 'custom', 'done', 'closed'].map(type => {
                             if (!grouped[type] || grouped[type].length === 0) return null;
                             return (
                               <div key={type} className="mb-xs">
-                                <div className="px-md py-xs text-[11px] font-bold text-white/40 flex justify-between items-center mt-1">
+                                <div className="px-md py-xs text-[11px] font-bold text-on-surface/40 flex justify-between items-center mt-1">
                                   <span>{typesMap[type]}</span>
                                   <span className="material-symbols-outlined text-[14px]">more_horiz</span>
                                 </div>
@@ -156,7 +156,7 @@ export default function TaskModal({
                                     <button
                                       key={s.id || s.status}
                                       onClick={() => handleStatusSelect(s.status)}
-                                      className={`w-full text-left px-md py-xs font-label-md transition-colors flex items-center justify-between group ${isSelected ? 'bg-white/10 text-white' : 'text-white/60 hover:bg-white/5 hover:text-white'}`}
+                                      className={`w-full text-left px-md py-xs font-label-md transition-colors flex items-center justify-between group ${isSelected ? 'bg-primary/20 text-on-surface' : 'text-on-surface/60 hover:bg-surface-variant hover:text-on-surface'}`}
                                     >
                                       <div className="flex items-center gap-xs">
                                         {/* Status Icon Indicator based on type */}
@@ -165,9 +165,9 @@ export default function TaskModal({
                                         {type === 'done' && <span className="material-symbols-outlined text-[14px]" style={{ color: s.color }}>check_circle</span>}
                                         {type === 'closed' && <span className="material-symbols-outlined text-[14px]" style={{ color: s.color }}>check_circle</span>}
                                         
-                                        <span className={`uppercase font-bold tracking-wider text-[11px] ${isSelected ? 'text-white' : 'group-hover:text-white text-white/60'}`}>{s.status}</span>
+                                        <span className={`uppercase font-bold tracking-wider text-[11px] ${isSelected ? 'text-on-surface font-extrabold' : 'group-hover:text-on-surface text-on-surface/60'}`}>{s.status}</span>
                                       </div>
-                                      {isSelected && <span className="material-symbols-outlined text-[16px] text-white">check</span>}
+                                      {isSelected && <span className="material-symbols-outlined text-[16px] text-primary">check</span>}
                                     </button>
                                   );
                                 })}

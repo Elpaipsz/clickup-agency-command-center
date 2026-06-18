@@ -11,26 +11,26 @@ const config: Config = {
     extend: {
       "colors": {
         "primary": "#B47CFD", // Vivid Lavender
-        "on-primary": "#FFFFFF", // Full White
+        "on-primary": "var(--bg-main)", // Inverted white/dark
         "secondary": "#B47CFD", // Vivid Lavender
-        "on-secondary": "#FFFFFF", // Full White
-        "background": "#0A0118", // Black Russian
-        "on-background": "#FFFFFF", // Full White
-        "surface": "rgba(36, 26, 48, 0.45)", // Prune Glass
-        "on-surface": "#FFFFFF", // Full White
-        "on-surface-variant": "#E9E9E9", // White Echo
-        "outline": "#B47CFD", // Vivid Lavender
-        "outline-variant": "rgba(180, 124, 253, 0.2)", // Subtle Lavender border
-        "surface-container-lowest": "rgba(10, 1, 24, 0.35)", // Black Russian Glass
-        "surface-container-low": "rgba(18, 10, 36, 0.55)", // Deep Violet Glass
-        "surface-container": "rgba(36, 26, 48, 0.55)", // Prune Glass
-        "surface-container-high": "rgba(36, 26, 48, 0.75)", // Semi-transparent Prune
-        "surface-container-highest": "rgba(36, 26, 48, 0.85)",
-        "surface-bright": "rgba(36, 26, 48, 0.65)", // Prune Glass
+        "on-secondary": "var(--bg-main)",
+        "background": "var(--bg-main)",
+        "on-background": "var(--text-primary)",
+        "surface": "var(--bg-card)",
+        "on-surface": "var(--text-primary)",
+        "on-surface-variant": "var(--text-secondary)",
+        "outline": "#B47CFD",
+        "outline-variant": "var(--border-glass)",
+        "surface-container-lowest": "var(--bg-main)",
+        "surface-container-low": "var(--bg-surface)",
+        "surface-container": "var(--bg-card)",
+        "surface-container-high": "var(--bg-card-hover)",
+        "surface-container-highest": "var(--bg-card-hover)",
+        "surface-bright": "var(--bg-card)",
         "primary-fixed": "#B47CFD",
-        "on-primary-fixed": "#FFFFFF",
+        "on-primary-fixed": "var(--bg-main)",
         "secondary-fixed": "#B47CFD",
-        "on-secondary-fixed": "#FFFFFF",
+        "on-secondary-fixed": "var(--bg-main)",
         "error": "#F85149",
         "on-error": "#FFFFFF",
         "error-container": "rgba(248, 81, 73, 0.15)",

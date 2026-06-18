@@ -56,10 +56,8 @@ export async function GET(request: NextRequest) {
 // POST: Crear una nueva tarea
 export async function POST(request: NextRequest) {
   try {
-    let token = request.headers.get('Authorization') || request.headers.get('x-clickup-token');
-    if (!token) {
-      token = process.env.CLICKUP_API_TOKEN || null;
-    }
+    const requestToken = request.headers.get('Authorization') || request.headers.get('x-clickup-token');
+    const token = resolveClickUpToken(requestToken);
 
     if (!token) {
       return NextResponse.json({ error: 'Autorización requerida.' }, { status: 401 });
@@ -110,10 +108,8 @@ export async function POST(request: NextRequest) {
 // PUT: Modificar una tarea existente
 export async function PUT(request: NextRequest) {
   try {
-    let token = request.headers.get('Authorization') || request.headers.get('x-clickup-token');
-    if (!token) {
-      token = process.env.CLICKUP_API_TOKEN || null;
-    }
+    const requestToken = request.headers.get('Authorization') || request.headers.get('x-clickup-token');
+    const token = resolveClickUpToken(requestToken);
 
     if (!token) {
       return NextResponse.json({ error: 'Autorización requerida.' }, { status: 401 });
@@ -172,10 +168,8 @@ export async function PUT(request: NextRequest) {
 // DELETE: Eliminar una tarea
 export async function DELETE(request: NextRequest) {
   try {
-    let token = request.headers.get('Authorization') || request.headers.get('x-clickup-token');
-    if (!token) {
-      token = process.env.CLICKUP_API_TOKEN || null;
-    }
+    const requestToken = request.headers.get('Authorization') || request.headers.get('x-clickup-token');
+    const token = resolveClickUpToken(requestToken);
 
     if (!token) {
       return NextResponse.json({ error: 'Autorización requerida.' }, { status: 401 });
