@@ -173,6 +173,7 @@ export default function Page() {
       {selectedTask && (
         <TaskModal
           task={selectedTask}
+          availableStatuses={data?.availableStatuses || []}
           onClose={() => setSelectedTask(null)}
           onStatusChange={handleStatusChange}
           onDelete={handleDelete}
