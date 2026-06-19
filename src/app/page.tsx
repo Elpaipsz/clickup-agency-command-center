@@ -178,12 +178,12 @@ export default function Page() {
                   <div 
                     key={task.id} 
                     onClick={() => setSelectedTask(task)} 
-                    className="flex flex-col md:flex-row items-start md:items-center justify-between p-lg transition-all cursor-pointer group gap-md glass-card relative overflow-hidden hover:bg-white/[0.04]"
+                    className="flex flex-col md:flex-row items-start md:items-center justify-between p-lg py-5 min-h-[96px] transition-all cursor-pointer group gap-md glass-card relative overflow-hidden hover:bg-white/[0.04]"
                   >
                     {/* Status Color Strip */}
                     <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: hexColor }}></div>
                     
-                    <div className="flex flex-col gap-sm flex-1 overflow-hidden w-full pl-2">
+                    <div className="flex flex-col gap-sm flex-1 w-full pl-2">
                       <span className="font-mono-data text-[10px] text-on-surface-variant/60 uppercase tracking-wider">
                         {task.area} • {task.client}
                       </span>
@@ -300,11 +300,11 @@ export default function Page() {
                     onClick={() => {
                       setSelectedTask(task);
                     }} 
-                    className="flex flex-col md:flex-row items-start md:items-center justify-between p-lg transition-all cursor-pointer group gap-md glass-card relative overflow-hidden hover:bg-white/[0.04]"
+                    className="flex flex-col md:flex-row items-start md:items-center justify-between p-lg py-5 min-h-[96px] transition-all cursor-pointer group gap-md glass-card relative overflow-hidden hover:bg-white/[0.04]"
                   >
                     <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: hexColor }}></div>
                     
-                    <div className="flex flex-col gap-sm flex-1 overflow-hidden w-full pl-2">
+                    <div className="flex flex-col gap-sm flex-1 w-full pl-2">
                       <span className="font-mono-data text-[10px] text-on-surface-variant/60 uppercase tracking-wider">
                         {task.area} • {task.client}
                       </span>
