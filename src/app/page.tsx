@@ -113,6 +113,22 @@ export default function Page() {
     return 0;
   });
 
+  const getPriorityBadge = (task: ProcessedTask) => {
+    if (task.isCritical) {
+      return (
+        <span className="px-3 py-1 rounded-full bg-error/20 border border-error/50 text-error font-label-lg font-black uppercase tracking-widest shadow-[0_0_12px_rgba(248,81,73,0.3)] flex items-center gap-1">
+          <span className="material-symbols-outlined text-[16px]">warning</span>
+          CRÍTICA
+        </span>
+      );
+    }
+    if (task.priority === 'urgent') return <span className="px-sm py-xs rounded-full bg-[#f44336]/10 text-[#f44336] font-mono-data text-[10px] uppercase tracking-wider">Urgente</span>;
+    if (task.priority === 'high') return <span className="px-sm py-xs rounded-full bg-[#ff9800]/10 text-[#ff9800] font-mono-data text-[10px] uppercase tracking-wider">Alta</span>;
+    if (task.priority === 'normal') return <span className="px-sm py-xs rounded-full bg-surface-variant text-on-surface-variant font-mono-data text-[10px] uppercase tracking-wider">Normal</span>;
+    if (task.priority === 'low') return <span className="px-sm py-xs rounded-full bg-[#8bc34a]/10 text-[#8bc34a] font-mono-data text-[10px] uppercase tracking-wider">Baja</span>;
+    return <span className="px-sm py-xs rounded-full bg-surface-container text-on-surface-variant font-mono-data text-[10px] uppercase tracking-wider">Sin Prioridad</span>;
+  };
+
   return (
     <main className="flex-1 flex flex-col overflow-y-auto w-full">
       {/* TopAppBar (Mobile) */}
@@ -125,33 +141,80 @@ export default function Page() {
       <div className="p-6 md:p-8 flex-1 max-w-container-max w-full">
         {/* 🔥 Atención Hoy Widget */}
         {sortedAttentionTasks.length > 0 && (
-          <div className="mb-8 p-lg glass-card border border-red-500/20 bg-gradient-to-r from-red-500/5 via-primary/5 to-transparent relative overflow-hidden rounded-2xl shadow-md animate-fade-in">
+          <div className="mb-8 p-lg glass-card border border-red-500/20 bg-gradient-to-r from-red-500/5 via-primary/5 to-transparent relative overflow-hidden rounded-2xl shadow-md animate-fade-in flex flex-col">
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-red-500 via-primary to-transparent"></div>
             <div className="flex items-center gap-xs mb-2">
               <span className="text-xl">🔥</span>
               <h3 className="font-headline-md text-headline-md text-on-surface font-bold">Atención Hoy</h3>
             </div>
-            <p className="font-label-md text-label-md text-red-500 uppercase tracking-wider font-extrabold mb-sm">
+            <p className="font-label-md text-label-md text-red-500 uppercase tracking-wider font-extrabold mb-md">
               {sortedAttentionTasks.length} {sortedAttentionTasks.length === 1 ? 'tarea crítica' : 'tareas críticas'}
             </p>
-            <ul className="flex flex-col gap-xs max-w-2xl">
-              {sortedAttentionTasks.slice(0, 5).map((task) => (
-                <li key={task.id} className="flex items-center gap-sm">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 flex-shrink-0 animate-pulse"></span>
-                  <button
-                    onClick={() => setSelectedTask(task)}
-                    className="font-body-md text-body-md text-on-surface-variant hover:text-red-500 text-left transition-colors font-medium border-b border-transparent hover:border-red-500/30"
+            
+            {/* Scrollable Container with board-style cards */}
+            <div className="max-h-[350px] overflow-y-auto pr-2 custom-scrollbar flex flex-col gap-sm">
+              {sortedAttentionTasks.map((task) => {
+                const dotColor = task.status.color;
+                const hexColor = dotColor.startsWith('#') ? dotColor : '#cccccc';
+
+                return (
+                  <div 
+                    key={task.id} 
+                    onClick={() => setSelectedTask(task)} 
+                    className="flex flex-col md:flex-row items-start md:items-center justify-between p-md transition-all cursor-pointer group gap-md glass-card relative overflow-hidden hover:bg-white/[0.04]"
                   >
-                    {task.name} <span className="text-xs text-on-surface-variant/40 ml-xs uppercase font-mono-data">({task.client})</span>
-                  </button>
-                </li>
-              ))}
-              {sortedAttentionTasks.length > 5 && (
-                <li className="text-xs text-on-surface-variant/50 italic mt-xs">
-                  Y {sortedAttentionTasks.length - 5} tareas más críticas abajo...
-                </li>
-              )}
-            </ul>
+                    {/* Status Color Strip */}
+                    <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: hexColor }}></div>
+                    
+                    <div className="flex flex-col gap-xs flex-1 overflow-hidden w-full pl-2">
+                      <span className="font-mono-data text-[10px] text-on-surface-variant/60 uppercase tracking-wider">
+                        {task.area} • {task.client}
+                      </span>
+                      <span className="font-bold text-[16px] text-on-surface line-clamp-1 group-hover:text-primary transition-colors">
+                        {task.name}
+                      </span>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <div className="w-2 h-2 rounded-full" style={{ backgroundColor: hexColor }}></div>
+                        <span className="font-label-md text-[11px] uppercase font-bold tracking-wider" style={{ color: hexColor }}>
+                          {task.status.name}
+                        </span>
+                        {task.isExpired && <span className="font-label-md text-error text-[11px] flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">timer_off</span> • Vencida</span>}
+                        {task.dueDate && <span className="font-label-md text-on-surface-variant text-[11px] flex items-center gap-1"><span className="material-symbols-outlined text-[12px]">calendar_today</span> • {new Date(task.dueDate).toLocaleDateString()}</span>}
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between md:justify-end gap-lg w-full md:w-auto flex-shrink-0 mt-1 md:mt-0">
+                      <div>
+                        {getPriorityBadge(task)}
+                      </div>
+                      
+                      {/* Assignees */}
+                      <div className="flex flex-wrap items-center gap-2">
+                        {task.assignees.length > 0 ? (
+                          task.assignees.map((a, i) => (
+                            <div key={i} className="flex items-center gap-2 bg-surface rounded-full pr-3 border border-outline-variant/50" title={a.name}>
+                              {a.avatar ? (
+                                <img src={a.avatar} alt={a.name} className="w-8 h-8 rounded-full border border-outline-variant bg-surface" />
+                              ) : (
+                                <div className="w-8 h-8 rounded-full border border-outline-variant bg-surface-variant flex items-center justify-center text-[12px] font-bold">
+                                  {a.initials}
+                                </div>
+                              )}
+                              <span className="font-label-sm text-on-surface-variant hidden md:block text-[11px]">{a.name.split(' ')[0]}</span>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="flex items-center gap-2 bg-error-container/30 text-on-error-container rounded-full px-3 py-1 border border-error-container" title="Sin asignar">
+                            <span className="material-symbols-outlined text-[14px]">person_add</span>
+                            <span className="font-label-sm text-[11px]">Sin asignar</span>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         )}
 

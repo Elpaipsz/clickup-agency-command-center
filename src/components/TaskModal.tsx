@@ -83,7 +83,7 @@ export default function TaskModal({
               <span className="text-on-surface-variant material-symbols-outlined text-[14px]">chevron_right</span>
               <span className="font-mono-data text-mono-data text-on-surface-variant uppercase">{task.client}</span>
             </div>
-            <h2 className="font-display-sm text-display-sm text-on-surface mb-2">{task.name}</h2>
+            <h2 className="font-black text-[28px] md:text-[34px] text-on-surface mb-2 leading-tight">{task.name}</h2>
             <div className="flex flex-wrap items-center gap-sm relative">
               {isUpdatingStatus && <span className="material-symbols-outlined animate-spin text-on-surface-variant text-[14px]">progress_activity</span>}
               

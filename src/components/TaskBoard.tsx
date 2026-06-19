@@ -266,7 +266,7 @@ export default function TaskBoard({ departmentTitle, departmentKey }: { departme
                         <div className="absolute left-0 top-0 bottom-0 w-1" style={{ backgroundColor: hexColor }}></div>
                         
                         <div className="flex flex-col gap-sm flex-1 overflow-hidden w-full pl-2">
-                          <span className="font-headline-sm text-headline-sm text-on-surface line-clamp-2">{task.name}</span>
+                          <span className="font-bold text-[16px] md:text-[18px] text-on-surface line-clamp-2 group-hover:text-primary transition-colors">{task.name}</span>
                           <div className="flex flex-wrap items-center gap-2">
                             <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: hexColor }}></div>
                             <span className="font-label-md text-label-md uppercase font-bold tracking-wider" style={{ color: hexColor }}>
