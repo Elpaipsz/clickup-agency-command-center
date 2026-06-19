@@ -253,7 +253,7 @@ export default function Page() {
       {/* Pop-up Modal for All Attention Tasks */}
       {isAllAttentionOpen && (
         <div className="fixed inset-0 z-[150] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 animate-in fade-in duration-200">
-          <div className="w-full max-w-4xl max-h-[85vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col bg-[var(--bg-main)] border border-[var(--border-glass)] relative">
+          <div className="w-full max-w-6xl max-h-[92vh] rounded-2xl shadow-2xl overflow-hidden flex flex-col bg-[var(--bg-main)] border border-[var(--border-glass)] relative">
             
             {/* Header */}
             <div className="p-lg border-b border-[var(--border-glass)] flex justify-between items-start bg-surface/50">
